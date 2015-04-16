@@ -5,6 +5,7 @@
  */
 package pro.miner.classess;
 
+import edu.smu.tspell.wordnet.Synset;
 import edu.smu.tspell.wordnet.SynsetType;
 import edu.smu.tspell.wordnet.WordNetDatabase;
 import edu.stanford.nlp.util.StringUtils;
@@ -13,6 +14,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.SwingWorker;
 import forms.Form_domain_expert;
 import static forms.Form_domain_expert.wordsField;
+import java.util.Arrays;
 
 /**
  *
@@ -20,56 +22,156 @@ import static forms.Form_domain_expert.wordsField;
  */
 public class SimilarWordSearcher extends SwingWorker {
 
-    public static ArrayList<String> similarWords = new ArrayList<String>();
+    private static Synset[] GetStemmedWord(String _word) {
+        WordNetDatabase dbWordNet = WordNetDatabase.getFileInstance();
+        
+        Synset[] synsets;
+        synsets = dbWordNet.getSynsets(_word.toLowerCase(), SynsetType.NOUN);
+        return synsets;
+        
+        //String stemmed;
+        //stemmed = stemmed.replace("]", "").replace("[", "").replace(",", "");
+        //stemmed = stemmed.trim();
+        //return stemmed;
+    }
+
+    private static boolean IsWordNoun(String _word) {
+        return Tagger.IsValidNoun(_word.toLowerCase()) && _word.length() >= 3;
+    }
+
+    public static ArrayList<String> similarWords = new ArrayList<>();
 
     private static void findSimilarWords() {
         String keyword = wordsField.getText().trim().toLowerCase();
-        ArrayList<String> corpusList = Corpus.words;
 
-        WordNetDatabase dbWordNet = WordNetDatabase.getFileInstance();
+        for (int i = 0; i < Corpus.words.size(); i++) {
 
-        for (int i = 0; i < corpusList.size(); i++) {
-            boolean hasPrevWord = (i - 1) > 0;
-            boolean hasNextWord = (i + 1 < corpusList.size());
+            String currentWord = Corpus.words.get(i).trim().toLowerCase();
 
-            String currentWord = corpusList.get(i).toString().trim().toLowerCase();
-            String prevWord = hasPrevWord ? corpusList.get(i - 1).toString() : "";
-            String nextWord = hasNextWord ? corpusList.get(i + 1).toString() : "";
-
+            //Check the current word either match with the keyword
             if (currentWord.equals(keyword)) {
-                String stemmed = "";
 
-                /*  CHECK PREVIOUS WORD */
-                if (hasPrevWord) {
-                    stemmed = dbWordNet.getSynsets(prevWord.toLowerCase(), SynsetType.NOUN).toString();
-                    stemmed = stemmed.replace("]", "").replace("[", "").replace(",", "");
-                    if (stemmed.trim().length() > 0 && Tagger.IsValidNoun(prevWord.toLowerCase()) && prevWord.length() >= 3) {
-                        if (!similarWords.contains(prevWord + " " + keyword)) {
-                            similarWords.add(prevWord + " " + keyword);
-                        }
+                boolean hasPrevFirstWord = (i - 1) > 0;
+                boolean hasNextFirstWord = (i + 1 < Corpus.words.size());
+                boolean hasPrevSecondWord = (i - 2) > 0;
+                boolean hasNextSecondWord = (i + 2 < Corpus.words.size());
+
+                //Get the previous first and second words
+                String prevFirstWord = hasPrevFirstWord ? Corpus.words.get(i - 1) : "";
+                String prevSecondWord = hasPrevSecondWord ? Corpus.words.get(i - 2) : "";
+                //Get the next first and second words
+                String nextFirstWord = hasNextFirstWord ? Corpus.words.get(i + 1) : "";
+                String nextSecondWord = hasNextSecondWord ? Corpus.words.get(i + 2) : "";
+
+                //String prevFirstStemmedWord = "";
+                //String prevSecondStemmedWord = "";
+                //String nextFirstStemmedWord = "";
+                //String nextSecondStemmedWord = "";
+
+                boolean prevFirstWordIsNoun = false;
+                boolean prevSecondWordIsNoun = false;
+                boolean nextFirstWordIsNoun = false;
+                boolean nextSecondWordIsNoun = false;
+
+                if (!"".equals(prevFirstWord) && !Arrays.asList(RemoveStopWord.stopWordsofwordnet).contains(prevFirstWord.toLowerCase())) {
+                    //prevFirstStemmedWord = GetStemmedWord(prevFirstWord);
+                    //if (!"".equals(prevFirstStemmedWord)) {
+                        prevFirstWordIsNoun = IsWordNoun(prevFirstWord);
+                    //}
+                }//End if
+
+                if (!"".equals(prevSecondWord) && !Arrays.asList(RemoveStopWord.stopWordsofwordnet).contains(prevSecondWord.toLowerCase())) {
+                    //prevSecondStemmedWord = GetStemmedWord(prevSecondWord);
+                    //if (!"".equals(prevSecondStemmedWord)) {
+                        prevSecondWordIsNoun = IsWordNoun(prevSecondWord);
+                    //}
+                }//End if
+
+                if (!"".equals(nextFirstWord) && !Arrays.asList(RemoveStopWord.stopWordsofwordnet).contains(nextFirstWord.toLowerCase())) {
+                    //nextFirstStemmedWord = GetStemmedWord(nextFirstWord);
+                    //if (!"".equals(nextFirstStemmedWord)) {
+                        nextFirstWordIsNoun = IsWordNoun(nextFirstWord);
+                    //}
+                }//End if
+
+                if (!"".equals(nextSecondWord) && !Arrays.asList(RemoveStopWord.stopWordsofwordnet).contains(nextSecondWord.toLowerCase())) {
+                    //nextSecondStemmedWord = GetStemmedWord(nextSecondWord);
+                    //if (!"".equals(nextSecondStemmedWord)) {
+                        nextSecondWordIsNoun = IsWordNoun(nextSecondWord);
+                    //}
+                }//End if
+
+                //--------------------------------------------------------------
+                if(!similarWords.contains(keyword)){
+                    similarWords.add(keyword);
+                }
+                
+                if (prevFirstWordIsNoun) {
+                    if (!similarWords.contains(prevFirstWord + " " + keyword)) {
+                        similarWords.add(prevFirstWord + " " + keyword);
+                    }
+                }//End if
+
+                if (nextFirstWordIsNoun) {
+                    if (!similarWords.contains(keyword + " " + nextFirstWord)) {
+                        similarWords.add(keyword + " " + nextFirstWord);
                     }
                 }
-
-                /*  CHECK NEXT WORD */
-                if (hasNextWord) {
-                    stemmed = dbWordNet.getSynsets(nextWord.toLowerCase(), SynsetType.NOUN).toString();
-                    stemmed = stemmed.replace("]", "").replace("[", "").replace(",", "");
-                    if (stemmed.trim().length() > 0 && Tagger.IsValidNoun(nextWord.toLowerCase()) && nextWord.length() >= 3) {
-                        if (!similarWords.contains(keyword + " " + nextWord)) {
-                            similarWords.add(keyword + " " + nextWord);
-                        }
+                
+                if(prevFirstWordIsNoun && nextFirstWordIsNoun){
+                     if (!similarWords.contains(prevFirstWord + " " + keyword + " " + nextFirstWord)) {
+                        similarWords.add(prevFirstWord + " " + keyword + " " + nextFirstWord);
                     }
                 }
+                
+                if(prevFirstWordIsNoun && prevSecondWordIsNoun){
+                    if (!similarWords.contains(prevSecondWord + " " + prevFirstWord  + " " + keyword)) {
+                        similarWords.add(prevSecondWord + " " + prevFirstWord  + " " + keyword);
+                    }
+                }
+                
+                if(nextFirstWordIsNoun && nextSecondWordIsNoun){
+                    if (!similarWords.contains(keyword + " " + nextFirstWord + " " + nextSecondWord)) {
+                        similarWords.add(keyword + " " + nextFirstWord + " " + nextSecondWord);
+                    }
+                }
+                //--------------------------------------------------------------
+                
+                /*
+                 String stemmed = "";
+
+                 /*  CHECK PREVIOUS WORD *
+                 if (hasPrevFirstWord) {
+                 stemmed = dbWordNet.getSynsets(prevFirstWord.toLowerCase(), SynsetType.NOUN).toString();
+                 stemmed = stemmed.replace("]", "").replace("[", "").replace(",", "");
+                 if (stemmed.trim().length() > 0 && Tagger.IsValidNoun(prevFirstWord.toLowerCase()) && prevFirstWord.length() >= 3) {
+                 if (!similarWords.contains(prevFirstWord + " " + keyword)) {
+                 similarWords.add(prevFirstWord + " " + keyword);
+                 }
+                 }
+                 }
+
+                 /*  CHECK NEXT WORD *
+                 if (hasNextFirstWord) {
+                 stemmed = dbWordNet.getSynsets(nextFirstWord.toLowerCase(), SynsetType.NOUN).toString();
+                 stemmed = stemmed.replace("]", "").replace("[", "").replace(",", "");
+                 if (stemmed.trim().length() > 0 && Tagger.IsValidNoun(nextFirstWord.toLowerCase()) && nextFirstWord.length() >= 3) {
+                 if (!similarWords.contains(keyword + " " + nextFirstWord)) {
+                 similarWords.add(keyword + " " + nextFirstWord);
+                 }
+                 }
+                 }
+                 */
             }
         }
-        
+
         /* DATABIND SIMILAR WORDS LIST */
         DefaultListModel similarWordsOfKeywordsModel = new DefaultListModel();
-        
-        for(String s : similarWords){
+
+        for (String s : similarWords) {
             similarWordsOfKeywordsModel.addElement(s);
         }
-        
+
         Form_domain_expert.similarWordsList.setModel(similarWordsOfKeywordsModel);
     }
 
