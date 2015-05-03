@@ -4,6 +4,8 @@ import forms.Form_stage_one;
 import java.awt.List;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +15,7 @@ import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
+import pro.miner.classess.AgrovocSearcher;
 import pro.miner.classess.Corpus;
 import pro.miner.classess.Global;
 import pro.miner.classess.StartStemmer;
@@ -78,12 +81,6 @@ public class Form_text_mining extends javax.swing.JFrame {
         domain = new javax.swing.JButton();
         tastStatus = new javax.swing.JLabel();
         departmentName = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        meaningArea = new javax.swing.JTextArea();
-        jScrollPane8 = new javax.swing.JScrollPane();
-        relatedWordsListWordNet = new javax.swing.JList();
         jPanel2 = new javax.swing.JPanel();
         checkfile = new javax.swing.JCheckBox();
         checktok = new javax.swing.JCheckBox();
@@ -100,17 +97,28 @@ public class Form_text_mining extends javax.swing.JFrame {
         freqlist = new javax.swing.JList();
         jLabel5 = new javax.swing.JLabel();
         select = new javax.swing.JButton();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        relatedWordsListMerged = new javax.swing.JList();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        relatedWordsListWiktionary = new javax.swing.JList();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        checkBoxIncludeAgrovocdDictionary = new javax.swing.JCheckBox();
         progressBarTextMining = new javax.swing.JProgressBar();
         jTextFieldGlossaryFile = new javax.swing.JTextField();
         select1 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
+        thirdPartySearchPanel = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        checkBoxIncludeAgrovocdDictionary = new javax.swing.JCheckBox();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        agrovocWords = new javax.swing.JList();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        relatedWordsListWiktionary = new javax.swing.JList();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        relatedWordsListWordNet = new javax.swing.JList();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        meaningArea = new javax.swing.JTextArea();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        derivedWordsListWiktionary = new javax.swing.JList();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        loadPreProcessedFile = new javax.swing.JCheckBox();
+        saveCorpusFile = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -137,9 +145,8 @@ public class Form_text_mining extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Cambria", 1, 32)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 116, 193));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("ProMine");
+        jLabel1.setText("Text Mining");
 
-        contextstree.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Select a Directory");
         contextstree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         contextstree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
@@ -154,8 +161,7 @@ public class Form_text_mining extends javax.swing.JFrame {
         departmentField.setRows(5);
         jScrollPane2.setViewportView(departmentField);
 
-        jLabel2.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
-        jLabel2.setText("File/Folder Path :");
+        jLabel2.setText("File/Folder Path");
 
         folderPath.setEditable(false);
         folderPath.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -166,10 +172,8 @@ public class Form_text_mining extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel3.setText("Words");
 
-        jLabel4.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel4.setText("Frequency");
 
         searchWord.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
@@ -208,29 +212,9 @@ public class Form_text_mining extends javax.swing.JFrame {
             }
         });
 
-        tastStatus.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         tastStatus.setText("Task Status");
 
-        departmentName.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         departmentName.setText("Department Name");
-
-        jLabel7.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
-        jLabel7.setText("Meaning");
-
-        jLabel8.setFont(new java.awt.Font("Cambria", 1, 10)); // NOI18N
-        jLabel8.setText("Related Words [Word Net]");
-
-        meaningArea.setEditable(false);
-        meaningArea.setColumns(20);
-        meaningArea.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        meaningArea.setLineWrap(true);
-        meaningArea.setRows(5);
-        meaningArea.setWrapStyleWord(true);
-        jScrollPane5.setViewportView(meaningArea);
-
-        relatedWordsListWordNet.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        relatedWordsListWordNet.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane8.setViewportView(relatedWordsListWordNet);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -281,7 +265,7 @@ public class Form_text_mining extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addContainerGap()
                 .addComponent(checkfile)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(checktok)
@@ -295,13 +279,12 @@ public class Form_text_mining extends javax.swing.JFrame {
                 .addComponent(checkwordselect)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(checktransform)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         selectedGlossaryFilePath.setEditable(false);
         selectedGlossaryFilePath.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
 
-        jLabel9.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel9.setText("Word to Define");
 
         listofwords.setModel(wordsmodel);
@@ -330,27 +313,6 @@ public class Form_text_mining extends javax.swing.JFrame {
             }
         });
 
-        relatedWordsListMerged.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        relatedWordsListMerged.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane9.setViewportView(relatedWordsListMerged);
-
-        relatedWordsListWiktionary.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        relatedWordsListWiktionary.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane10.setViewportView(relatedWordsListWiktionary);
-
-        jLabel10.setFont(new java.awt.Font("Cambria", 1, 10)); // NOI18N
-        jLabel10.setText("Related Words [Wikipedia]");
-
-        jLabel11.setFont(new java.awt.Font("Cambria", 1, 10)); // NOI18N
-        jLabel11.setText("Related Words [Merged]");
-
-        checkBoxIncludeAgrovocdDictionary.setText("Search Agrovoc - Agriculture Dictionary");
-        checkBoxIncludeAgrovocdDictionary.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkBoxIncludeAgrovocdDictionaryActionPerformed(evt);
-            }
-        });
-
         jTextFieldGlossaryFile.setEditable(false);
         jTextFieldGlossaryFile.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         jTextFieldGlossaryFile.setPreferredSize(new java.awt.Dimension(6, 25));
@@ -367,8 +329,114 @@ public class Form_text_mining extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setFont(new java.awt.Font("Cambria", 1, 10)); // NOI18N
         jLabel12.setText("Glossary File");
+
+        jLabel8.setText("Synonyms [Word Net]");
+
+        jLabel10.setText("Synonyms [Wiktionary]");
+
+        checkBoxIncludeAgrovocdDictionary.setSelected(true);
+        checkBoxIncludeAgrovocdDictionary.setText("Agrovoc - Agriculture Dictionary");
+        checkBoxIncludeAgrovocdDictionary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkBoxIncludeAgrovocdDictionaryActionPerformed(evt);
+            }
+        });
+
+        jScrollPane11.setViewportView(agrovocWords);
+
+        relatedWordsListWiktionary.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        relatedWordsListWiktionary.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane10.setViewportView(relatedWordsListWiktionary);
+
+        relatedWordsListWordNet.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        relatedWordsListWordNet.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane8.setViewportView(relatedWordsListWordNet);
+
+        meaningArea.setEditable(false);
+        meaningArea.setColumns(20);
+        meaningArea.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        meaningArea.setLineWrap(true);
+        meaningArea.setRows(5);
+        meaningArea.setWrapStyleWord(true);
+        jScrollPane5.setViewportView(meaningArea);
+
+        derivedWordsListWiktionary.setName(""); // NOI18N
+        jScrollPane7.setViewportView(derivedWordsListWiktionary);
+
+        jLabel6.setText("Derived Words [Wiktionary]");
+
+        jLabel7.setText("Meaning");
+
+        javax.swing.GroupLayout thirdPartySearchPanelLayout = new javax.swing.GroupLayout(thirdPartySearchPanel);
+        thirdPartySearchPanel.setLayout(thirdPartySearchPanelLayout);
+        thirdPartySearchPanelLayout.setHorizontalGroup(
+            thirdPartySearchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(thirdPartySearchPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(thirdPartySearchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(thirdPartySearchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(thirdPartySearchPanelLayout.createSequentialGroup()
+                        .addGroup(thirdPartySearchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addGroup(thirdPartySearchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(thirdPartySearchPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                        .addComponent(checkBoxIncludeAgrovocdDictionary)
+                        .addGap(20, 20, 20))))
+        );
+        thirdPartySearchPanelLayout.setVerticalGroup(
+            thirdPartySearchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, thirdPartySearchPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(thirdPartySearchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addGroup(thirdPartySearchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel10)
+                        .addComponent(checkBoxIncludeAgrovocdDictionary)))
+                .addGap(6, 6, 6)
+                .addGroup(thirdPartySearchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(thirdPartySearchPanelLayout.createSequentialGroup()
+                        .addGroup(thirdPartySearchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(thirdPartySearchPanelLayout.createSequentialGroup()
+                                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel7))
+                            .addGroup(thirdPartySearchPanelLayout.createSequentialGroup()
+                                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel6)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(thirdPartySearchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jLabel6.getAccessibleContext().setAccessibleName("jLabelWiktionaryDerivedWords");
+
+        loadPreProcessedFile.setSelected(true);
+        loadPreProcessedFile.setText("Load Pre-Processed File");
+
+        saveCorpusFile.setText("Save");
+        saveCorpusFile.setEnabled(false);
+        saveCorpusFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveCorpusFileActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -381,72 +449,56 @@ public class Form_text_mining extends javax.swing.JFrame {
                         .addComponent(departmentName)
                         .addComponent(jScrollPane1)
                         .addComponent(jScrollPane2)
-                        .addComponent(tastStatus)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tastStatus))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE))
-                            .addComponent(selectedGlossaryFilePath)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel7))
-                                .addGap(18, 18, 18)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane9)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel11)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(progressBarTextMining, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(searchWord, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel3)))
-                                .addGap(29, 29, 29)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                            .addComponent(addSource, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(domain, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(select))
-                                    .addComponent(jLabel4)))
+                                        .addComponent(jLabel4)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane6)))
+                            .addComponent(selectedGlossaryFilePath)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(folderPath, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(folderPath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(select))
+                            .addComponent(progressBarTextMining, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(searchWord, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(addSource, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(domain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jTextFieldGlossaryFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(select1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(saveCorpusFile))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(thirdPartySearchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel12)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(jTextFieldGlossaryFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(select1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(224, 224, 224)
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(checkBoxIncludeAgrovocdDictionary)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                        .addGap(18, 18, 18)
+                                        .addComponent(loadPreProcessedFile)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -454,70 +506,60 @@ public class Form_text_mining extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(18, 30, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(folderPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(select, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchWord)
-                            .addComponent(reset)
-                            .addComponent(addSource)
-                            .addComponent(domain)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(select, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
-                            .addComponent(jScrollPane6))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane6)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(searchWord)
+                                    .addComponent(reset)
+                                    .addComponent(addSource)
+                                    .addComponent(domain))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(progressBarTextMining, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(departmentName)))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(departmentName)
-                        .addComponent(jLabel9))
-                    .addComponent(progressBarTextMining, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(selectedGlossaryFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(loadPreProcessedFile))
                         .addGap(3, 3, 3)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextFieldGlossaryFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(select1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel10)
-                            .addComponent(checkBoxIncludeAgrovocdDictionary))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(select1)
+                            .addComponent(saveCorpusFile)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tastStatus)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(thirdPartySearchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -547,7 +589,7 @@ public class Form_text_mining extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 2, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -578,6 +620,62 @@ public class Form_text_mining extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void select1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_select1ActionPerformed
+        final JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        switch (fileChooser.showOpenDialog(this)) {
+            case JFileChooser.APPROVE_OPTION: {
+                jTextFieldGlossaryFile.setText(fileChooser.getSelectedFile().toString());
+
+                progressBarTextMining.setIndeterminate(true);
+                Thread worker = new Thread() {
+                    public void run() {
+                        File file = fileChooser.getSelectedFile();
+                        try {
+                            Form_text_mining.progressBarTextMining.setIndeterminate(true);
+                            if (loadPreProcessedFile.isSelected()) {
+                                Corpus.fillPreProcessedWordList(file);
+                            } else {
+                                Corpus.fillWordList(file);
+                                saveCorpusFile.setEnabled(true);
+                            }
+                            Form_text_mining.progressBarTextMining.setIndeterminate(false);
+                            Form_text_mining.domain.setEnabled(true);
+                            Global.glossaryProcessed = true;
+                        } catch (IOException ex) {
+                            Logger.getLogger(Form_text_mining.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                };
+                worker.start();
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }//GEN-LAST:event_select1ActionPerformed
+
+    private void jTextFieldGlossaryFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldGlossaryFileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldGlossaryFileActionPerformed
+
+    private void checkBoxIncludeAgrovocdDictionaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxIncludeAgrovocdDictionaryActionPerformed
+        // TODO add your handling code here
+        includeAgrovocDictionary = checkBoxIncludeAgrovocdDictionary.isSelected();
+    }//GEN-LAST:event_checkBoxIncludeAgrovocdDictionaryActionPerformed
+
+    private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
+        // TODO add your handling code here:
+        new TextMining().execute();
+    }//GEN-LAST:event_selectActionPerformed
+
+    private void freqlistValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_freqlistValueChanged
+        // TODO add your handling code here:
+        listofwords.setSelectedIndex(freqlist.getSelectedIndex());
+        listofwords.ensureIndexIsVisible(freqlist.getSelectedIndex());
+    }//GEN-LAST:event_freqlistValueChanged
+
     private void listofwordsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listofwordsValueChanged
         // TODO add your handling code here:
         new listWordSelection().select();
@@ -592,7 +690,6 @@ public class Form_text_mining extends javax.swing.JFrame {
     }//GEN-LAST:event_domainActionPerformed
 
     private void addSourceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSourceActionPerformed
-
 
     }//GEN-LAST:event_addSourceActionPerformed
 
@@ -615,7 +712,7 @@ public class Form_text_mining extends javax.swing.JFrame {
 
     private void searchWordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWordActionPerformed
         try {
-            List list = null;
+            //List list = null;
             words.clear();
 
             // TODO add your handling code here:
@@ -652,42 +749,48 @@ public class Form_text_mining extends javax.swing.JFrame {
                 Form_text_mining.relatedWordsListWordNet.setModel(wordNetModel);
             }
 
+            if(checkBoxIncludeAgrovocdDictionary.isSelected()){
+                AgrovocSearcher.execute();
+            }
+            
             // Wiktionary Search
-            DefaultListModel wikModel = new DefaultListModel();
+            DefaultListModel wiktionarySynonmsModel = new DefaultListModel();
+            DefaultListModel wiktionaryDerivedWordsModel = new DefaultListModel();
             try {
                 WiktionarySearcher searcher = new WiktionarySearcher(listWordSelection.selectedWord, "api");
                 ArrayList<String> wikList;
-                wikList = searcher.getSynonymsAndDerivedWordList();
+                wikList = searcher.getSynonymsWordList();
 
-                // create a wiktionary model                
+                //Add wiktionary synonms into model
                 for (Object s : wikList) {
-                    wikModel.addElement(s.toString());
+                    wiktionarySynonmsModel.addElement(s.toString());
                     words.add(s.toString());
                 }
+                                        
+                //Add wiktionary related words
+                wikList = searcher.getDerivedWordList();
 
-                // assign to wiktionary list
-                Form_text_mining.relatedWordsListWiktionary.removeAll();
-                Form_text_mining.relatedWordsListWiktionary.setModel(wikModel);
-            } catch (Exception exception) {
-                Form_text_mining.relatedWordsListWiktionary.removeAll();
-                Form_text_mining.relatedWordsListWiktionary.setModel(wikModel);
-            }
-
-            // create a combined model
-            DefaultListModel model = new DefaultListModel();
-            try {
-                for (Object s : words) {
-                    model.addElement(s.toString());
+                //Add wiktionary synonms into model
+                for (Object s : wikList) {
+                    wiktionaryDerivedWordsModel.addElement(s.toString());
                 }
+      
+                //Update wiktionary synonms list
+                Form_text_mining.relatedWordsListWiktionary.removeAll();
+                Form_text_mining.relatedWordsListWiktionary.setModel(wiktionarySynonmsModel);
 
-                // assign to combined list
-                Form_text_mining.relatedWordsListMerged.removeAll();
-                Form_text_mining.relatedWordsListMerged.setModel(model);
+                //Upldate wiktionary derived words list
+                Form_text_mining.derivedWordsListWiktionary.removeAll();
+                Form_text_mining.derivedWordsListWiktionary.setModel(wiktionaryDerivedWordsModel);
+
             } catch (Exception exception) {
-                Form_text_mining.relatedWordsListMerged.removeAll();
-                Form_text_mining.relatedWordsListMerged.setModel(model);
-            }
+                Form_text_mining.relatedWordsListWiktionary.removeAll();
+                Form_text_mining.relatedWordsListWiktionary.setModel(wiktionarySynonmsModel);
 
+                //Upldate wiktionary derived words list
+                Form_text_mining.derivedWordsListWiktionary.removeAll();
+                Form_text_mining.derivedWordsListWiktionary.setModel(wiktionaryDerivedWordsModel);
+            }                       
         } catch (Exception ex) {
             Logger.getLogger(Form_text_mining.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -703,59 +806,30 @@ public class Form_text_mining extends javax.swing.JFrame {
         t.SelectTree();
     }//GEN-LAST:event_contextstreeValueChanged
 
-    private void selectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectActionPerformed
-        // TODO add your handling code here:        
-        new TextMining().execute();
-    }//GEN-LAST:event_selectActionPerformed
-
-    private void freqlistValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_freqlistValueChanged
+    private void saveCorpusFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveCorpusFileActionPerformed
         // TODO add your handling code here:
-        listofwords.setSelectedIndex(freqlist.getSelectedIndex());
-        listofwords.ensureIndexIsVisible(freqlist.getSelectedIndex());
-    }//GEN-LAST:event_freqlistValueChanged
+        //NAEEM
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(javax.swing.JFileChooser.FILES_ONLY);
+        int returnVal = fileChooser.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
 
-    private void checkBoxIncludeAgrovocdDictionaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxIncludeAgrovocdDictionaryActionPerformed
-        // TODO add your handling code here
-        includeAgrovocDictionary = checkBoxIncludeAgrovocdDictionary.isSelected();
-    }//GEN-LAST:event_checkBoxIncludeAgrovocdDictionaryActionPerformed
-
-    private void jTextFieldGlossaryFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldGlossaryFileActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldGlossaryFileActionPerformed
-
-    private void select1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_select1ActionPerformed
-        final JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        switch (fileChooser.showOpenDialog(this)) {
-            case JFileChooser.APPROVE_OPTION: {
-                progressBarTextMining.setIndeterminate(true);
-                Thread worker = new Thread() {
-                    public void run() {
-                        File file = fileChooser.getSelectedFile();
-                        try {
-                            Form_text_mining.progressBarTextMining.setIndeterminate(true);
-                            Corpus.fillWordList(file);
-                            Form_text_mining.progressBarTextMining.setIndeterminate(false);
-                            Form_text_mining.domain.setEnabled(true);
-                            Global.glossaryProcessed = true;
-                        } catch (IOException ex) {
-                            Logger.getLogger(Form_text_mining.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                };
-                worker.start();
-                break;
-            }
-            default: {
-                break;
+            try {
+                File selectedFile = fileChooser.getSelectedFile();
+                Files.write(Paths.get(selectedFile.toString()), Global.file_text.getBytes());
+                saveCorpusFile.setEnabled(false);
+            } catch (IOException e) {
+                System.out.println("Exception occured while writing corpus file: " + e.getMessage());
             }
         }
-    }//GEN-LAST:event_select1ActionPerformed
+        //Global.file_text;
+    }//GEN-LAST:event_saveCorpusFileActionPerformed
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton addSource;
+    public static javax.swing.JList agrovocWords;
     public static javax.swing.JCheckBox checkBoxIncludeAgrovocdDictionary;
     public static javax.swing.JCheckBox checkFreqCount;
     public static javax.swing.JCheckBox checkStem;
@@ -767,18 +841,19 @@ public class Form_text_mining extends javax.swing.JFrame {
     public static javax.swing.JTree contextstree;
     public static javax.swing.JTextArea departmentField;
     public static javax.swing.JLabel departmentName;
+    public static javax.swing.JList derivedWordsListWiktionary;
     public static javax.swing.JButton domain;
     public static javax.swing.JFileChooser fileChooser;
     public static javax.swing.JTextField folderPath;
     public static javax.swing.JList freqlist;
     public static javax.swing.JLabel jLabel1;
     public static javax.swing.JLabel jLabel10;
-    public static javax.swing.JLabel jLabel11;
     public static javax.swing.JLabel jLabel12;
     public static javax.swing.JLabel jLabel2;
     public static javax.swing.JLabel jLabel3;
     public static javax.swing.JLabel jLabel4;
     public static javax.swing.JLabel jLabel5;
+    public static javax.swing.JLabel jLabel6;
     public static javax.swing.JLabel jLabel7;
     public static javax.swing.JLabel jLabel8;
     public static javax.swing.JLabel jLabel9;
@@ -791,26 +866,29 @@ public class Form_text_mining extends javax.swing.JFrame {
     public static javax.swing.JPanel jPanel2;
     public static javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JScrollPane jScrollPane10;
+    public static javax.swing.JScrollPane jScrollPane11;
     public static javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JScrollPane jScrollPane3;
     public static javax.swing.JScrollPane jScrollPane4;
     public static javax.swing.JScrollPane jScrollPane5;
     public static javax.swing.JScrollPane jScrollPane6;
+    public static javax.swing.JScrollPane jScrollPane7;
     public static javax.swing.JScrollPane jScrollPane8;
-    public static javax.swing.JScrollPane jScrollPane9;
     public static javax.swing.JTextArea jTextArea1;
     public static javax.swing.JTextField jTextFieldGlossaryFile;
     public static javax.swing.JList listofwords;
+    public static javax.swing.JCheckBox loadPreProcessedFile;
     public static javax.swing.JTextArea meaningArea;
     public static javax.swing.JProgressBar progressBarTextMining;
-    public static javax.swing.JList relatedWordsListMerged;
     public static javax.swing.JList relatedWordsListWiktionary;
     public static javax.swing.JList relatedWordsListWordNet;
     public static javax.swing.JButton reset;
+    public static javax.swing.JButton saveCorpusFile;
     public static javax.swing.JButton searchWord;
     public static javax.swing.JButton select;
     public static javax.swing.JButton select1;
     public static javax.swing.JTextField selectedGlossaryFilePath;
     public static javax.swing.JLabel tastStatus;
+    public static javax.swing.JPanel thirdPartySearchPanel;
     // End of variables declaration//GEN-END:variables
 }

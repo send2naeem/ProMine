@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,6 +22,31 @@ import org.apache.commons.lang3.StringUtils;
 public class Corpus {
 
     public static ArrayList<String> words = new ArrayList<String>();
+    
+    public static void fillPreProcessedWordList(File filePath) throws IOException {
+    
+        boolean fileFound = false;
+        String line = "";
+        BufferedReader fileReader = null;
+        
+        try {
+            fileReader = new BufferedReader(new FileReader(filePath));
+            fileFound = (fileReader != null) ? true : false;
+        } catch (Exception e) {
+        }
+
+        if (fileFound) {
+            while ((line = fileReader.readLine()) != null) {
+                Global.file_text += line;  
+            }
+            
+            List myList = new ArrayList();
+            Collections.addAll(myList, Global.file_text.split(" "));            
+            words.addAll(myList);
+        } else {
+            System.out.println("Glossary file not found. Please load a valid corpus file and try again.");
+        }
+    }
 
     public static void fillWordList(File filePath) throws IOException {
         boolean fileFound = false;

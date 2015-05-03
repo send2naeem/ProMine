@@ -303,6 +303,31 @@ public class WiktionarySearcher {
         return compositeList;
     }
 
+    public ArrayList<String> getSynonymsWordList() throws Exception {
+        HashSet set = new HashSet();
+        ArrayList<String> compositeList = new ArrayList();
+
+        this.extractSection("synonyms");
+
+        set.addAll(this.synonyms);
+
+        compositeList.addAll(set);
+
+        return compositeList;
+    }
+    
+    public ArrayList<String> getDerivedWordList() throws Exception {
+        HashSet set = new HashSet();
+        ArrayList<String> compositeList = new ArrayList();
+
+        this.extractSection("derived_terms");
+        set.addAll(this.derivedTerms);
+
+        compositeList.addAll(set);
+
+        return compositeList;
+    }
+    
     public ArrayList<String> getSynonymsAndDerivedWordList() throws Exception {
         HashSet set = new HashSet();
         ArrayList<String> compositeList = new ArrayList();

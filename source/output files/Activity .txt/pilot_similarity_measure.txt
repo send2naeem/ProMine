@@ -1,0 +1,95 @@
+development pilot : 0.1016624448112947
+dollar limit original : 0.07229087675081268
+buffer element : 0.06630161835715452
+buffer element tween : 0.06630161835715452
+pilot seat : 0.06443935379201268
+pilot seat accident : 0.06443935379201268
+part original : 0.04819956286364835
+original premium : 0.04357447856052314
+half original : 0.04356908411472319
+half original amount : 0.04356908411472319
+pilot program : 0.04271183105055094
+insurance plan original : 0.03617937404031096
+relationship original : 0.036145526393768564
+relationship original premium : 0.036145526393768564
+original position : 0.03134520092755002
+original position evidence : 0.03134520092755002
+issue age original : 0.03134512459851225
+pilot study : 0.029046133611417484
+original amortization : 0.028471564687562276
+original amortization schedule : 0.028471564687562276
+pilot project : 0.027863303071674984
+pilot project region : 0.027863303071674984
+pilot project gin : 0.027863303071674984
+original insurance : 0.026537637946419248
+original term : 0.02652180102974493
+original term insurer : 0.02652180102974493
+limit original : 0.026521099069025972
+limit original policy : 0.026521099069025972
+original death : 0.026520933406296295
+original occupancy : 0.02652045326516453
+original life : 0.025778160961603354
+original life insurance : 0.025778160961603354
+amount original : 0.025778038094202062
+amount original life : 0.025778038094202062
+risk original : 0.0220846249496587
+original article : 0.020896794718537674
+original policy : 0.014251508494271462
+original estimate : 0.01423583107684755
+original estimate policy : 0.01423583107684755
+view pilot : 0.013607087522059837
+view pilot program : 0.013607087522059837
+insurance policy original : 0.013272673376674631
+plan original : 0.013260783521419305
+work original : 0.013260625814244444
+principal original : 0.013260330788944357
+original sum : 0.012888884644658585
+reason original : 0.01288799644319583
+catastrophe risk pilot : 0.012887860448268455
+face amount original : 0.012887860448268455
+age original : 0.012488230865150114
+catastrophe model pilot : 0.012485677362899857
+date half original : 0.012485677362899857
+original face : 0.012048631865891129
+original face amount : 0.012048631865891129
+liability reason original : 0.011569583337949201
+original base : 0.011040379153979984
+original base amount : 0.011040379153979984
+original paper : 0.011040220186848478
+insurance pilot : 0.0
+insurance pilot project : 0.0
+policy yond original : 0.0
+risk financing pilot : 0.0
+risk insurance pilot : 0.0
+risk pilot : 0.0
+risk pilot project : 0.0
+nefit original : 0.0
+nefit original life : 0.0
+death nefit original : 0.0
+financing pilot : 0.0
+financing pilot program : 0.0
+original equipment : 0.0
+original equipment manufacturer : 0.0
+model pilot : 0.0
+model pilot project : 0.0
+original medicare : 0.0
+original medicare part : 0.0
+return original : 0.0
+megacity pilot : 0.0
+megacity pilot project : 0.0
+original schedule : 0.0
+yond original : 0.0
+yond original term : 0.0
+launch pilot : 0.0
+launch pilot project : 0.0
+microinsurance pilot : 0.0
+microinsurance pilot project : 0.0
+catastrophe-model pilot : 0.0
+catastrophe-model pilot project : 0.0
+pilot : 0.0
+funding catastrophe-model pilot : 0.0
+feasibility megacity pilot : 0.0
+potential megacity pilot : 0.0
+effort view pilot : 0.0
+buffer : 0.0
+original : 0.0

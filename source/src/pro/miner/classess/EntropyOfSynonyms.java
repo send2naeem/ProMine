@@ -33,31 +33,47 @@ public class EntropyOfSynonyms extends SwingWorker {
     public static HashMap<String, String> EntropyOfSimilarWord = new HashMap<String, String>();
     public static DefaultListModel entropy_list_model = new DefaultListModel();
     public static double total_entropy = 0;
+    public static int word_count_in_corpus = 0;
 
+    @Override
+    protected String doInBackground() throws Exception {
+        countEntropy();
+        return "";
+    }
+    
     public static void countEntropy() {
         Form_domain_expert.pbofwordnet.setIndeterminate(true);
-        
+
         entropy_list_model.clear();
         Form_domain_expert.entropyList.removeAll();
-        
+
         for (int i = 0; i < Form_domain_expert.relatedList.getModel().getSize(); i++) {
-            String word = Form_domain_expert.relatedList.getModel().getElementAt(i).toString();
-            fillEntropy(word);
 
-            double prob = Double.parseDouble(EntropyOfSimilarWord.get(word).toString());
-            double log_prob = Math.log(prob);
-            double entropy = prob > 0 ? prob * log_prob : 0;
+            try {
 
-             //total_entropy += entropy;
-//             System.out.println("=========================");
-//             System.out.println("=========================Entropy  Prob [" + word + "]: " + prob);
-//             System.out.println("=========================Entropy  Prob Log[" + word + "]: " + log_prob);
-             System.out.println("=========================Entropy [" + word + "]: " + entropy);
-//             System.out.println("=========================");
-            
-            total_entropy = total_entropy + entropy;
-            
-            entropy_list_model.addElement(entropy);
+                //Get the word from list
+                String word = Form_domain_expert.relatedList.getModel().getElementAt(i).toString();
+
+                //Compute probability of the word
+                fillEntropy(word);
+
+                double prob = Double.parseDouble(EntropyOfSimilarWord.get(word).toString());
+                double log_prob = Math.log(prob);
+                double entropy = prob > 0 ? prob * log_prob : 0;
+
+                //total_entropy += entropy;
+                //System.out.println("=========================");
+                //System.out.println("=========================Entropy  Prob [" + word + "]: " + prob);
+                //System.out.println("=========================Entropy  Prob Log[" + word + "]: " + log_prob);
+                System.out.println("=========================Entropy [" + word + "]: " + entropy);
+                //System.out.println("=========================");
+
+                total_entropy = total_entropy + entropy;
+
+                entropy_list_model.addElement(entropy);
+            } catch (Exception e) {
+                System.out.println("Exception occured while computing entroy, exception: " + e.getMessage());
+            }
         }
 
         Form_domain_expert.pbofwordnet.setIndeterminate(false);
@@ -68,14 +84,13 @@ public class EntropyOfSynonyms extends SwingWorker {
 //            double entropy_double_item = Double.parseDouble(entropy_item);
 //            total_entropy += entropy_double_item;
 //        }
-
-        //System.out.println("Total Entropy : " + total_entropy);
+//        System.out.println("Total Entropy : " + total_entropy);
     }
 
     private static double fillEntropy(String input_word) {
         double prob = 0;
         double count_of_word = 0;
-        double total_words = 0;
+        //double total_words = 0;
         try {
             Form_domain_expert.pbofwordnet.setIndeterminate(true);
             //BufferedReader br = new BufferedReader(new FileReader(file));
@@ -100,18 +115,18 @@ public class EntropyOfSynonyms extends SwingWorker {
 //            br.close();
             //System.out.println("Count :" + count_of_word);
             line = Global.file_text;
-            
-            String[] word_array = input_word.split("\\s");
-            count_of_word += countWordFreq(StringUtils.join(word_array, "(\\s+)"), line);
-            total_words += CountWords(line);
 
-            prob = count_of_word / total_words;
+            String[] word_array = input_word.split("\\s");
+            count_of_word = countWordFreq(StringUtils.join(word_array, "(\\s+)"), line);
+            if (word_count_in_corpus == 0) {
+                word_count_in_corpus = CountWords(line);
+            }
+
+            //Get the probability of word in corpus file
+            prob = count_of_word / word_count_in_corpus;
 
             EntropyOfSimilarWord.put(input_word, Double.toString(prob));
-
-            //System.out.println("Probability : " + prob);
             Form_domain_expert.pbofwordnet.setIndeterminate(false);
-
             return prob;
         } catch (Exception e) {
             return 0;
@@ -212,9 +227,5 @@ public class EntropyOfSynonyms extends SwingWorker {
         return tempList;
     }
 
-    @Override
-    protected String doInBackground() throws Exception {
-        countEntropy();
-        return "";
-    }
+    
 }

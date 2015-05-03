@@ -71,8 +71,9 @@ public class Form_domain_expert extends javax.swing.JFrame {
         
                
     }
+    public static DefaultListModel synonymModel = new DefaultListModel();
     public static DefaultListModel relatedModel = new DefaultListModel();
-
+    
     public void setFieldValues() {
         //Finding Probability Of the Selected Word
         int totalProb = 0;
@@ -82,29 +83,45 @@ public class Form_domain_expert extends javax.swing.JFrame {
         int selectFreq = Integer.parseInt(listWordSelection.selectedWordFrequency);
         double prob = (double) selectFreq / totalProb;
         prob = Math.floor(prob * 10000000) / 10000000.0;
-        Form_domain_expert.probArea.setText(prob + "");
-//------------------------------------------------
+        probArea.setText(prob + "");
+        
+        //------------------------------------------------
+        for (int i = 0; i < Form_text_mining.relatedWordsListWordNet.getModel().getSize(); i++) {
+            synonymModel.addElement(Form_text_mining.relatedWordsListWordNet.getModel().getElementAt(i).toString().replace("_", " "));
+            System.out.println(synonymModel.getElementAt(i));
+        }
 
-        System.out.println("hello");
-        for (int i = 0; i < Form_text_mining.relatedWordsListMerged.getModel().getSize(); i++) {
-            relatedModel.addElement(Form_text_mining.relatedWordsListMerged.getModel().getElementAt(i).toString().replace("_", " "));
+        for (int i = 0; i < Form_text_mining.relatedWordsListWiktionary.getModel().getSize(); i++) {
+            synonymModel.addElement(Form_text_mining.relatedWordsListWiktionary.getModel().getElementAt(i).toString().replace("_", " "));
+            System.out.println(synonymModel.getElementAt(i));
+        }
+        relatedList.setModel(synonymModel);
+        //------------------------------------------------
+        for (int i = 0; i < Form_text_mining.derivedWordsListWiktionary.getModel().getSize(); i++) {
+            relatedModel.addElement(Form_text_mining.derivedWordsListWiktionary.getModel().getElementAt(i).toString().replace("_", " "));
             System.out.println(relatedModel.getElementAt(i));
         }
 
-        wordsField.setText(listWordSelection.selectedWord);
-        relatedList.setModel(relatedModel);
+        for (int i = 0; i < Form_text_mining.agrovocWords.getModel().getSize(); i++) {
+            relatedModel.addElement(Form_text_mining.agrovocWords.getModel().getElementAt(i).toString().replace("_", " "));
+            System.out.println(relatedModel.getElementAt(i));
+        }
+        derivedList.setModel(relatedModel);
+        //------------------------------------------------
+        
+        wordsField.setText(listWordSelection.selectedWord); 
         freqArea.setText(listWordSelection.selectedWordFrequency);
         weightArea.setText(listWordSelection.selectedWordWeight);
 
-        String keywordprob = Form_domain_expert.probArea.getText();
+        String keywordprob = probArea.getText();
         double prob3 = Double.parseDouble(keywordprob);
         double prob4 = Math.log(prob3) / Math.log(2);
         if (prob3 > 0) {
             double p2 = -(prob3 * prob4);
             p2 = Math.floor(p2 * 10000000) / 10000000.0;
-            Form_domain_expert.entropyArea.setText("" + p2);
+            entropyArea.setText("" + p2);
         } else {
-            Form_domain_expert.entropyArea.setText("");
+            entropyArea.setText("");
         }
     }
 
@@ -121,71 +138,73 @@ public class Form_domain_expert extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         mainPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        wordsField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        freqArea = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        probArea = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        weightArea = new javax.swing.JTextField();
+        generalInfo = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        jComboBoxSimilarWordsFilter = new javax.swing.JComboBox();
+        infoGainThreshold = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         entropyArea = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        relatedList = new javax.swing.JList();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        list1_list2 = new javax.swing.JList();
-        searchGlossaryButton = new javax.swing.JButton();
-        contextualMiningButton = new javax.swing.JButton();
-        mergeButton = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        similarWordsList = new javax.swing.JList();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        similarWordsOfRelatedWordsList = new javax.swing.JList();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        list1_list2_freq = new javax.swing.JList();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        mergeListProb = new javax.swing.JList();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        entropyList = new javax.swing.JList();
+        weightArea = new javax.swing.JTextField();
+        jRadioButtonProbNegative = new javax.swing.JRadioButton();
+        jRadioButtonProbPositive = new javax.swing.JRadioButton();
+        jLabel12 = new javax.swing.JLabel();
+        probArea = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jRadioButtonEntropyNegative = new javax.swing.JRadioButton();
+        freqArea = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        wordsField = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jRadioButtonEntropyPositive = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
+        detailedInfo = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        similarityMeasureList = new javax.swing.JList();
         jScrollPane11 = new javax.swing.JScrollPane();
         infoGainList = new javax.swing.JList();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        entropyList = new javax.swing.JList();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        mergeListProb = new javax.swing.JList();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        list1_list2_freq = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        list1_list2 = new javax.swing.JList();
+        jLabel19 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        similarWordsOfRelatedWordsList = new javax.swing.JList();
+        jLabel8 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        similarWordsList = new javax.swing.JList();
+        jLabel7 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        relatedList = new javax.swing.JList();
+        jLabel22 = new javax.swing.JLabel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        derivedList = new javax.swing.JList();
+        jLabel14 = new javax.swing.JLabel();
+        searchGlossaryButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        mergeButton = new javax.swing.JButton();
+        contextualMiningButton = new javax.swing.JButton();
         mergeFreqButton = new javax.swing.JButton();
         mergeTotalFreqButton = new javax.swing.JButton();
         mergeClear = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        CountEntropy = new javax.swing.JButton();
-        entropyClear = new javax.swing.JButton();
-        CountInfoGain = new javax.swing.JButton();
         infoGainClear = new javax.swing.JButton();
+        btnCountSimilarityMeasure = new javax.swing.JButton();
+        btnClearSimilarityMeasure = new javax.swing.JButton();
+        CountInfoGain = new javax.swing.JButton();
+        entropyClear = new javax.swing.JButton();
+        CountEntropy = new javax.swing.JButton();
         pbofkeyword = new javax.swing.JProgressBar();
         pbofwordnet = new javax.swing.JProgressBar();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        infoGainThreshold = new javax.swing.JTextField();
-        jScrollPane12 = new javax.swing.JScrollPane();
-        similarWordsOfAgrovoc = new javax.swing.JList();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jRadioButtonEntropyPositive = new javax.swing.JRadioButton();
-        jRadioButtonEntropyNegative = new javax.swing.JRadioButton();
-        jRadioButtonProbPositive = new javax.swing.JRadioButton();
-        jRadioButtonProbNegative = new javax.swing.JRadioButton();
-        jScrollPane13 = new javax.swing.JScrollPane();
-        similarityMeasureList = new javax.swing.JList();
-        jLabel18 = new javax.swing.JLabel();
-        btnClearSimilarityMeasure = new javax.swing.JButton();
-        btnCountSimilarityMeasure = new javax.swing.JButton();
-        jComboBoxSimilarWordsFilter = new javax.swing.JComboBox();
-        jLabel13 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -203,34 +222,26 @@ public class Form_domain_expert extends javax.swing.JFrame {
         mainPanel.setBackground(new java.awt.Color(154, 180, 209));
         mainPanel.setPreferredSize(new java.awt.Dimension(1106, 600));
 
-        jLabel1.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel1.setText("Word:");
+        jLabel13.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel13.setText("Similar Words");
 
-        wordsField.setEditable(false);
-        wordsField.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        wordsField.addActionListener(new java.awt.event.ActionListener() {
+        jComboBoxSimilarWordsFilter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" }));
+        jComboBoxSimilarWordsFilter.setSelectedIndex(9);
+        jComboBoxSimilarWordsFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wordsFieldActionPerformed(evt);
+                jComboBoxSimilarWordsFilterActionPerformed(evt);
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel2.setText("Frequency:");
+        infoGainThreshold.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        infoGainThreshold.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                infoGainThresholdActionPerformed(evt);
+            }
+        });
 
-        freqArea.setEditable(false);
-        freqArea.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-
-        jLabel3.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel3.setText("Probability:");
-
-        probArea.setEditable(false);
-        probArea.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-
-        jLabel4.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel4.setText("Weight:");
-
-        weightArea.setEditable(false);
-        weightArea.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel6.setText("Information Gain");
 
         jLabel5.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
         jLabel5.setText("Entropy:");
@@ -243,13 +254,219 @@ public class Form_domain_expert extends javax.swing.JFrame {
             }
         });
 
-        relatedList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        relatedList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(relatedList);
+        weightArea.setEditable(false);
+        weightArea.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+
+        jRadioButtonProbNegative.setBackground(new java.awt.Color(154, 180, 209));
+        buttonGroup2.add(jRadioButtonProbNegative);
+        jRadioButtonProbNegative.setText("-ve");
+
+        jRadioButtonProbPositive.setBackground(new java.awt.Color(154, 180, 209));
+        buttonGroup2.add(jRadioButtonProbPositive);
+        jRadioButtonProbPositive.setText("+ve");
+
+        jLabel12.setText("Probability");
+
+        probArea.setEditable(false);
+        probArea.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel3.setText("Probability:");
+
+        jLabel4.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel4.setText("Weight:");
+
+        jRadioButtonEntropyNegative.setBackground(new java.awt.Color(154, 180, 209));
+        buttonGroup1.add(jRadioButtonEntropyNegative);
+        jRadioButtonEntropyNegative.setText("-ve");
+
+        freqArea.setEditable(false);
+        freqArea.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel2.setText("Frequency:");
+
+        wordsField.setEditable(false);
+        wordsField.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        wordsField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wordsFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("Entropy");
+
+        jRadioButtonEntropyPositive.setBackground(new java.awt.Color(154, 180, 209));
+        buttonGroup1.add(jRadioButtonEntropyPositive);
+        jRadioButtonEntropyPositive.setText("+ve");
+
+        jLabel1.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel1.setText("Word:");
+
+        javax.swing.GroupLayout generalInfoLayout = new javax.swing.GroupLayout(generalInfo);
+        generalInfo.setLayout(generalInfoLayout);
+        generalInfoLayout.setHorizontalGroup(
+            generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(generalInfoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(generalInfoLayout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButtonEntropyPositive)
+                        .addGap(6, 6, 6)
+                        .addComponent(jRadioButtonEntropyNegative))
+                    .addGroup(generalInfoLayout.createSequentialGroup()
+                        .addComponent(wordsField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(freqArea, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addGroup(generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(generalInfoLayout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButtonProbPositive)
+                                .addGap(6, 6, 6)
+                                .addComponent(jRadioButtonProbNegative))
+                            .addGroup(generalInfoLayout.createSequentialGroup()
+                                .addComponent(probArea, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(weightArea, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(entropyArea, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(generalInfoLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(118, 118, 118)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addGap(27, 27, 27)
+                        .addGroup(generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(infoGainThreshold)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxSimilarWordsFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        generalInfoLayout.setVerticalGroup(
+            generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalInfoLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(generalInfoLayout.createSequentialGroup()
+                        .addGroup(generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel13))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(wordsField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(freqArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(probArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(weightArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(entropyArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(infoGainThreshold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxSimilarWordsFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(generalInfoLayout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jRadioButtonEntropyPositive)
+                                .addComponent(jRadioButtonEntropyNegative)
+                                .addComponent(jLabel9))
+                            .addGroup(generalInfoLayout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addGroup(generalInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel12)
+                                    .addComponent(jRadioButtonProbPositive)
+                                    .addComponent(jRadioButtonProbNegative)))))))
+        );
+
+        jLabel18.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel18.setText("Similarity Measure");
+
+        similarityMeasureList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        similarityMeasureList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane13.setViewportView(similarityMeasureList);
+
+        infoGainList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        infoGainList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane11.setViewportView(infoGainList);
+
+        jLabel17.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel17.setText("<html><p align=\"center\">Information Gain</p></html>");
+
+        jLabel16.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel16.setText("<html><p align=\"center\">Entropy (-ve)</p></html>");
+
+        entropyList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        entropyList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane10.setViewportView(entropyList);
+
+        mergeListProb.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        mergeListProb.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane6.setViewportView(mergeListProb);
+
+        jLabel11.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel11.setText("Probabilty");
+
+        jLabel10.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel10.setText("Frequency");
+
+        list1_list2_freq.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        list1_list2_freq.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane5.setViewportView(list1_list2_freq);
 
         list1_list2.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
         list1_list2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(list1_list2);
+
+        jLabel19.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel19.setText("Merged List");
+
+        similarWordsOfRelatedWordsList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        similarWordsOfRelatedWordsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane4.setViewportView(similarWordsOfRelatedWordsList);
+
+        jLabel8.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("<html><p align=\"center\">Related Words</p></html>");
+
+        similarWordsList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        similarWordsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane3.setViewportView(similarWordsList);
+
+        jLabel7.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("<html><p align=\"center\">Similar Words</p></html>");
+
+        relatedList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        relatedList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(relatedList);
+
+        jLabel22.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel22.setText("<html><p align=\"center\">Synonyms</p></html>");
+
+        jScrollPane7.setViewportView(derivedList);
+
+        jLabel14.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("Derived Words");
 
         searchGlossaryButton.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
         searchGlossaryButton.setText("Search Glossary");
@@ -259,12 +476,10 @@ public class Form_domain_expert extends javax.swing.JFrame {
             }
         });
 
-        contextualMiningButton.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
-        contextualMiningButton.setText("Contextual Mining");
-        contextualMiningButton.setEnabled(false);
-        contextualMiningButton.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Apply All");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                contextualMiningButtonActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -277,29 +492,14 @@ public class Form_domain_expert extends javax.swing.JFrame {
             }
         });
 
-        similarWordsList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        similarWordsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane3.setViewportView(similarWordsList);
-
-        similarWordsOfRelatedWordsList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        similarWordsOfRelatedWordsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane4.setViewportView(similarWordsOfRelatedWordsList);
-
-        list1_list2_freq.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        list1_list2_freq.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane5.setViewportView(list1_list2_freq);
-
-        mergeListProb.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        mergeListProb.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane6.setViewportView(mergeListProb);
-
-        entropyList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        entropyList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane10.setViewportView(entropyList);
-
-        infoGainList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        infoGainList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane11.setViewportView(infoGainList);
+        contextualMiningButton.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
+        contextualMiningButton.setText("Contextual Mining");
+        contextualMiningButton.setEnabled(false);
+        contextualMiningButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contextualMiningButtonActionPerformed(evt);
+            }
+        });
 
         mergeFreqButton.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
         mergeFreqButton.setText("Count Frequency");
@@ -331,42 +531,6 @@ public class Form_domain_expert extends javax.swing.JFrame {
             }
         });
 
-        jLabel10.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel10.setText("Frequency");
-
-        jLabel11.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel11.setText("Probabilty");
-
-        CountEntropy.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
-        CountEntropy.setText("Count");
-        CountEntropy.setEnabled(false);
-        CountEntropy.setOpaque(false);
-        CountEntropy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CountEntropyActionPerformed(evt);
-            }
-        });
-
-        entropyClear.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
-        entropyClear.setText("C");
-        entropyClear.setEnabled(false);
-        entropyClear.setOpaque(false);
-        entropyClear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                entropyClearActionPerformed(evt);
-            }
-        });
-
-        CountInfoGain.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
-        CountInfoGain.setText("Count");
-        CountInfoGain.setEnabled(false);
-        CountInfoGain.setOpaque(false);
-        CountInfoGain.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CountInfoGainActionPerformed(evt);
-            }
-        });
-
         infoGainClear.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
         infoGainClear.setText("C");
         infoGainClear.setEnabled(false);
@@ -374,94 +538,6 @@ public class Form_domain_expert extends javax.swing.JFrame {
         infoGainClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 infoGainClearActionPerformed(evt);
-            }
-        });
-
-        jLabel22.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setText("<html><p align=\"center\">Synonyms</p></html>");
-
-        jLabel7.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("<html><p align=\"center\">Similar Words</p></html>");
-
-        jLabel8.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("<html><p align=\"center\">Related Words</p></html>");
-
-        jLabel19.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel19.setText("Merged List");
-
-        jLabel16.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setText("<html><p align=\"center\">Entropy (-ve)</p></html>");
-
-        jLabel17.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel17.setText("<html><p align=\"center\">Information Gain</p></html>");
-
-        jButton1.setText("Apply All");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jLabel6.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel6.setText("Information Gain");
-
-        infoGainThreshold.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        infoGainThreshold.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                infoGainThresholdActionPerformed(evt);
-            }
-        });
-
-        similarWordsOfAgrovoc.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        similarWordsOfAgrovoc.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane12.setViewportView(similarWordsOfAgrovoc);
-        similarWordsOfAgrovoc.getAccessibleContext().setAccessibleName("AgrovocRelatedWords");
-
-        jLabel20.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setText("Agrovoc Definitions");
-
-        jLabel9.setText("Entropy");
-
-        jLabel12.setText("Probability");
-
-        jRadioButtonEntropyPositive.setBackground(new java.awt.Color(154, 180, 209));
-        buttonGroup1.add(jRadioButtonEntropyPositive);
-        jRadioButtonEntropyPositive.setText("+ve");
-
-        jRadioButtonEntropyNegative.setBackground(new java.awt.Color(154, 180, 209));
-        buttonGroup1.add(jRadioButtonEntropyNegative);
-        jRadioButtonEntropyNegative.setText("-ve");
-
-        jRadioButtonProbPositive.setBackground(new java.awt.Color(154, 180, 209));
-        buttonGroup2.add(jRadioButtonProbPositive);
-        jRadioButtonProbPositive.setText("+ve");
-
-        jRadioButtonProbNegative.setBackground(new java.awt.Color(154, 180, 209));
-        buttonGroup2.add(jRadioButtonProbNegative);
-        jRadioButtonProbNegative.setText("-ve");
-
-        similarityMeasureList.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        similarityMeasureList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane13.setViewportView(similarityMeasureList);
-
-        jLabel18.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText("Similarity Measure");
-
-        btnClearSimilarityMeasure.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
-        btnClearSimilarityMeasure.setText("C");
-        btnClearSimilarityMeasure.setEnabled(false);
-        btnClearSimilarityMeasure.setOpaque(false);
-        btnClearSimilarityMeasure.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearSimilarityMeasureActionPerformed(evt);
             }
         });
 
@@ -475,260 +551,223 @@ public class Form_domain_expert extends javax.swing.JFrame {
             }
         });
 
-        jComboBoxSimilarWordsFilter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" }));
-        jComboBoxSimilarWordsFilter.setSelectedIndex(9);
-        jComboBoxSimilarWordsFilter.addActionListener(new java.awt.event.ActionListener() {
+        btnClearSimilarityMeasure.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
+        btnClearSimilarityMeasure.setText("C");
+        btnClearSimilarityMeasure.setEnabled(false);
+        btnClearSimilarityMeasure.setOpaque(false);
+        btnClearSimilarityMeasure.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxSimilarWordsFilterActionPerformed(evt);
+                btnClearSimilarityMeasureActionPerformed(evt);
             }
         });
 
-        jLabel13.setFont(new java.awt.Font("Cambria", 1, 12)); // NOI18N
-        jLabel13.setText("Similar Words");
+        CountInfoGain.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
+        CountInfoGain.setText("Count");
+        CountInfoGain.setEnabled(false);
+        CountInfoGain.setOpaque(false);
+        CountInfoGain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CountInfoGainActionPerformed(evt);
+            }
+        });
+
+        entropyClear.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
+        entropyClear.setText("C");
+        entropyClear.setEnabled(false);
+        entropyClear.setOpaque(false);
+        entropyClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                entropyClearActionPerformed(evt);
+            }
+        });
+
+        CountEntropy.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
+        CountEntropy.setText("Count");
+        CountEntropy.setEnabled(false);
+        CountEntropy.setOpaque(false);
+        CountEntropy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CountEntropyActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout detailedInfoLayout = new javax.swing.GroupLayout(detailedInfo);
+        detailedInfo.setLayout(detailedInfoLayout);
+        detailedInfoLayout.setHorizontalGroup(
+            detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(detailedInfoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, detailedInfoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(detailedInfoLayout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(detailedInfoLayout.createSequentialGroup()
+                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(15, 15, 15)
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(detailedInfoLayout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(detailedInfoLayout.createSequentialGroup()
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(detailedInfoLayout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(detailedInfoLayout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(4, 4, 4))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, detailedInfoLayout.createSequentialGroup()
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(1, 1, 1)))
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(detailedInfoLayout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32))
+                    .addGroup(detailedInfoLayout.createSequentialGroup()
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchGlossaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(detailedInfoLayout.createSequentialGroup()
+                                .addComponent(mergeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(contextualMiningButton)
+                                .addGap(27, 27, 27)
+                                .addComponent(mergeFreqButton)
+                                .addGap(22, 22, 22)
+                                .addComponent(mergeTotalFreqButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(mergeClear)
+                                .addGap(18, 18, 18)
+                                .addComponent(CountEntropy, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(entropyClear)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(CountInfoGain, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(infoGainClear)
+                                .addGap(34, 34, 34)
+                                .addComponent(btnCountSimilarityMeasure, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(detailedInfoLayout.createSequentialGroup()
+                                .addComponent(pbofkeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(pbofwordnet, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnClearSimilarityMeasure)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        detailedInfoLayout.setVerticalGroup(
+            detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, detailedInfoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, detailedInfoLayout.createSequentialGroup()
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(detailedInfoLayout.createSequentialGroup()
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane7)))
+                    .addGroup(detailedInfoLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel19))
+                .addGap(18, 18, 18)
+                .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(mergeClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(mergeTotalFreqButton)
+                        .addComponent(mergeFreqButton))
+                    .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(contextualMiningButton)
+                        .addComponent(mergeButton))
+                    .addComponent(searchGlossaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(detailedInfoLayout.createSequentialGroup()
+                        .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnCountSimilarityMeasure)
+                                .addComponent(btnClearSimilarityMeasure))
+                            .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(CountEntropy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(entropyClear)
+                                .addComponent(CountInfoGain)
+                                .addComponent(infoGainClear)))
+                        .addGap(26, 26, 26)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(detailedInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(pbofkeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pbofwordnet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(pbofkeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(pbofwordnet, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addGap(337, 337, 337)
-                                        .addComponent(mergeFreqButton)
-                                        .addGap(22, 22, 22)
-                                        .addComponent(mergeTotalFreqButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(mergeClear))))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jRadioButtonEntropyPositive)
-                                .addGap(6, 6, 6)
-                                .addComponent(jRadioButtonEntropyNegative)))
-                        .addGap(0, 199, Short.MAX_VALUE))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(16, 16, 16)
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(10, 10, 10)
-                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                                .addComponent(mergeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(contextualMiningButton))))
-                                    .addComponent(searchGlossaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                                .addComponent(wordsField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(12, 12, 12)
-                                                .addComponent(freqArea, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel20))
-                                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                                .addGap(28, 28, 28)
-                                                .addComponent(jLabel12)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jRadioButtonProbPositive)
-                                                .addGap(6, 6, 6)
-                                                .addComponent(jRadioButtonProbNegative))
-                                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                                .addGap(28, 28, 28)
-                                                .addComponent(probArea, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(30, 30, 30)
-                                                .addComponent(weightArea, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(entropyArea, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(20, 20, 20))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel11)
-                                        .addGap(4, 4, 4))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(1, 1, 1)))
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(mainPanelLayout.createSequentialGroup()
-                                        .addGap(5, 5, 5)
-                                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                                .addComponent(CountEntropy, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(entropyClear)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(CountInfoGain, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(infoGainClear)
-                                                .addGap(34, 34, 34)
-                                                .addComponent(btnCountSimilarityMeasure, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(btnClearSimilarityMeasure))
-                                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(118, 118, 118)
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel5)
-                                .addGap(27, 27, 27)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(infoGainThreshold)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBoxSimilarWordsFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                    .addComponent(generalInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(detailedInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(wordsField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(freqArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(probArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(weightArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(entropyArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(infoGainThreshold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxSimilarWordsFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18))
-                        .addGap(8, 8, 8)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jRadioButtonEntropyPositive)
-                                    .addComponent(jRadioButtonEntropyNegative)
-                                    .addComponent(jLabel9)))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel12)
-                                    .addComponent(jRadioButtonProbPositive)
-                                    .addComponent(jRadioButtonProbNegative))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel20))
-                                .addGap(6, 6, 6)
-                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel19)
-                                .addGap(8, 8, 8)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnCountSimilarityMeasure)
-                                .addComponent(btnClearSimilarityMeasure))
-                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(CountEntropy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(entropyClear)
-                                .addComponent(mergeClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(mergeTotalFreqButton)
-                                .addComponent(mergeFreqButton)
-                                .addComponent(contextualMiningButton)
-                                .addComponent(mergeButton)
-                                .addComponent(CountInfoGain)
-                                .addComponent(infoGainClear)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pbofkeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pbofwordnet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(searchGlossaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                .addContainerGap()
+                .addComponent(generalInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(detailedInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -764,14 +803,14 @@ public class Form_domain_expert extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1194, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
-                .addGap(2, 2, 2))
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 608, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -797,115 +836,7 @@ public class Form_domain_expert extends javax.swing.JFrame {
         ProbabiltyOfMergedList.mergeProbModel.removeAllElements();
         ProbabilityOfMutualList.mutualProbModel.removeAllElements();
     }//GEN-LAST:event_formWindowClosing
-
-    private void mergeClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeClearActionPerformed
-        // TODO add your handling code here:
-        mergeClear.setEnabled(false);
-        mergeTotalFreqButton.setEnabled(true);
-        DefaultListModel mergeListProbClear = (DefaultListModel) mergeListProb.getModel();
-        mergeListProbClear.removeAllElements();
-//        DefaultListModel list1_list2_freqClear = (DefaultListModel) list1_list2_freq.getModel();
-//        list1_list2_freqClear.removeAllElements();
-        //mergeTotalFreqArea.setText("");
-
-    }//GEN-LAST:event_mergeClearActionPerformed
-
-    private void mergeFreqButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeFreqButtonActionPerformed
-        // TODO add your handling code here:
-        mergeFreqButton.setEnabled(false);
-        mergeTotalFreqButton.setEnabled(true);
-        jScrollPane5.getVerticalScrollBar().setModel(model);
-        //new Thread(new FrequencyCountMergeList()).start();
-        new MergeListFreqCounter().execute();
-    }//GEN-LAST:event_mergeFreqButtonActionPerformed
-
-    private void mergeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeButtonActionPerformed
-        // TODO add your handling code here:
-        mergeButton.setEnabled(false);
-        contextualMiningButton.setEnabled(true);
-        new Thread(new MergeLists()).start();
-    }//GEN-LAST:event_mergeButtonActionPerformed
-
-    private void searchGlossaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGlossaryButtonActionPerformed
-
-        GlossarySearcher.alltext.delete(0, GlossarySearcher.alltext.length());
-
-        searchGlossaryButton.setEnabled(false);
-        mergeButton.setEnabled(true);
-        
-        System.out.println("Step : Executing Glossary Search");
-        new GlossarySearcher().execute();        
-        System.out.println("Step : Gloassary Search Finished");
-    }//GEN-LAST:event_searchGlossaryButtonActionPerformed
-
-    private void wordsFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wordsFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_wordsFieldActionPerformed
-
-    private void mergeTotalFreqButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeTotalFreqButtonActionPerformed
-        // TODO add your handling code here:
-        mergeTotalFreqButton.setEnabled(false);
-        //mergeTotalFreqArea.setVisible(true);
-        mergeClear.setEnabled(true);
-        jScrollPane6.getVerticalScrollBar().setModel(model);
-        new Thread(new ProbabiltyOfMergedList()).start();
-        CountEntropy.setEnabled(true);
-    }//GEN-LAST:event_mergeTotalFreqButtonActionPerformed
-
-    private void contextualMiningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contextualMiningButtonActionPerformed
-        // TODO add your handling code here:
-        contextualMiningButton.setEnabled(false);
-        mergeFreqButton.setEnabled(true);
-        model = jScrollPane2.getVerticalScrollBar().getModel();        
-    }//GEN-LAST:event_contextualMiningButtonActionPerformed
-
-    private void CountEntropyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CountEntropyActionPerformed
-        // TODO add your handling code here:
-        CountEntropy.setEnabled(false);
-        entropyClear.setEnabled(true);
-        //new Thread(new EntropySimilarWords()).start();
-        new EntropyOfSynonyms().execute();
-        CountInfoGain.setEnabled(true);
-        jScrollPane10.getVerticalScrollBar().setModel(model3);
-    }//GEN-LAST:event_CountEntropyActionPerformed
-
-    private void CountInfoGainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CountInfoGainActionPerformed
-        // TODO add your handling code here:
-        CountInfoGain.setEnabled(false);
-        infoGainClear.setEnabled(true);
-        btnCountSimilarityMeasure.setEnabled(true);        
-        new Thread(new NewInfoGain()).start();        
-        final_List.setEnabled(true);
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("" + listWordSelection.selectedWord + ".txt"));
-            SavedList.setEnabled(true);
-        } catch (IOException e) {
-        }
-        jScrollPane11.getVerticalScrollBar().setModel(model3);
-        infoGainThreshold.setEditable(true);
-        
-    }//GEN-LAST:event_CountInfoGainActionPerformed
-
-    private void infoGainClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoGainClearActionPerformed
-        // TODO add your handling code here:
-        infoGainClear.setEnabled(false);
-        CountInfoGain.setEnabled(true);
-        DefaultListModel infoGainListClear = (DefaultListModel) infoGainList.getModel();
-        infoGainListClear.removeAllElements();
-    }//GEN-LAST:event_infoGainClearActionPerformed
-
-    private void entropyClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entropyClearActionPerformed
-        // TODO add your handling code here:
-        entropyClear.setEnabled(false);
-        CountEntropy.setEnabled(true);
-        DefaultListModel entropyListClear = (DefaultListModel) entropyList.getModel();
-        entropyListClear.removeAllElements();
-    }//GEN-LAST:event_entropyClearActionPerformed
     public static Form_final_list finallist = null;    
-
-    private void entropyAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entropyAreaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_entropyAreaActionPerformed
 
     private void final_ListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_final_ListActionPerformed
         // TODO add your handling code here:
@@ -927,40 +858,147 @@ public class Form_domain_expert extends javax.swing.JFrame {
 
     }//GEN-LAST:event_SavedListActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //SimilarityMeasureCalculator.findPaths("boy", "girl");
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jComboBoxSimilarWordsFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSimilarWordsFilterActionPerformed
+        // TODO add your handling code here:
+        String item = this.jComboBoxSimilarWordsFilter.getSelectedItem().toString();
+        Double percent = Double.parseDouble(item);
+
+        double recordsToLoad = SimilarWordSearcher.similarWords.size() * (percent/100);
+
+        /* DATABIND SIMILAR WORDS LIST */
+        DefaultListModel similarWordsOfKeywordsModel = new DefaultListModel();
+
+        for(int i=0; i< recordsToLoad; i++){
+            similarWordsOfKeywordsModel.addElement(SimilarWordSearcher.similarWords.get(i));
+        }
+
+        similarWordsList.setModel(similarWordsOfKeywordsModel);
+    }//GEN-LAST:event_jComboBoxSimilarWordsFilterActionPerformed
+
+    private void btnCountSimilarityMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCountSimilarityMeasureActionPerformed
+        // TODO add your handling code here:
+        new Thread(new SimilarityMeasureCalculator()).start();
+    }//GEN-LAST:event_btnCountSimilarityMeasureActionPerformed
+
+    private void btnClearSimilarityMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSimilarityMeasureActionPerformed
+        // TODO add your handling code here:
+        similarityMeasureList.removeAll();
+    }//GEN-LAST:event_btnClearSimilarityMeasureActionPerformed
 
     private void infoGainThresholdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoGainThresholdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_infoGainThresholdActionPerformed
 
-    private void btnClearSimilarityMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSimilarityMeasureActionPerformed
-        // TODO add your handling code here:
-        Form_domain_expert.similarityMeasureList.removeAll();
-    }//GEN-LAST:event_btnClearSimilarityMeasureActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //SimilarityMeasureCalculator.findPaths("boy", "girl");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void btnCountSimilarityMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCountSimilarityMeasureActionPerformed
+    private void infoGainClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoGainClearActionPerformed
         // TODO add your handling code here:
-        new Thread(new SimilarityMeasureCalculator()).start(); 
-    }//GEN-LAST:event_btnCountSimilarityMeasureActionPerformed
+        infoGainClear.setEnabled(false);
+        CountInfoGain.setEnabled(true);
+        DefaultListModel infoGainListClear = (DefaultListModel) infoGainList.getModel();
+        infoGainListClear.removeAllElements();
+    }//GEN-LAST:event_infoGainClearActionPerformed
 
-    private void jComboBoxSimilarWordsFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSimilarWordsFilterActionPerformed
+    private void CountInfoGainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CountInfoGainActionPerformed
         // TODO add your handling code here:
-        String item = this.jComboBoxSimilarWordsFilter.getSelectedItem().toString();
-        Double percent = Double.parseDouble(item);
-        
-        double recordsToLoad = SimilarWordSearcher.similarWords.size() * (percent/100);
-        
-        /* DATABIND SIMILAR WORDS LIST */
-        DefaultListModel similarWordsOfKeywordsModel = new DefaultListModel();
-        
-        for(int i=0; i< recordsToLoad; i++){
-            similarWordsOfKeywordsModel.addElement(SimilarWordSearcher.similarWords.get(i));
+        CountInfoGain.setEnabled(false);
+        infoGainClear.setEnabled(true);
+        btnCountSimilarityMeasure.setEnabled(true);
+        new Thread(new NewInfoGain()).start();
+        final_List.setEnabled(true);
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("" + listWordSelection.selectedWord + ".txt"));
+            SavedList.setEnabled(true);
+        } catch (IOException e) {
         }
-        
-        Form_domain_expert.similarWordsList.setModel(similarWordsOfKeywordsModel);
-    }//GEN-LAST:event_jComboBoxSimilarWordsFilterActionPerformed
+        jScrollPane11.getVerticalScrollBar().setModel(model3);
+        infoGainThreshold.setEditable(true);
+
+    }//GEN-LAST:event_CountInfoGainActionPerformed
+
+    private void entropyClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entropyClearActionPerformed
+        // TODO add your handling code here:
+        entropyClear.setEnabled(false);
+        CountEntropy.setEnabled(true);
+        DefaultListModel entropyListClear = (DefaultListModel) entropyList.getModel();
+        entropyListClear.removeAllElements();
+    }//GEN-LAST:event_entropyClearActionPerformed
+
+    private void CountEntropyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CountEntropyActionPerformed
+        // TODO add your handling code here:
+        CountEntropy.setEnabled(false);
+        entropyClear.setEnabled(true);
+        //new Thread(new EntropySimilarWords()).start();
+        new EntropyOfSynonyms().execute();
+        CountInfoGain.setEnabled(true);
+        jScrollPane10.getVerticalScrollBar().setModel(model3);
+    }//GEN-LAST:event_CountEntropyActionPerformed
+
+    private void mergeClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeClearActionPerformed
+        // TODO add your handling code here:
+        mergeClear.setEnabled(false);
+        mergeTotalFreqButton.setEnabled(true);
+        DefaultListModel mergeListProbClear = (DefaultListModel) mergeListProb.getModel();
+        mergeListProbClear.removeAllElements();
+        //        DefaultListModel list1_list2_freqClear = (DefaultListModel) list1_list2_freq.getModel();
+        //        list1_list2_freqClear.removeAllElements();
+        //mergeTotalFreqArea.setText("");
+    }//GEN-LAST:event_mergeClearActionPerformed
+
+    private void mergeTotalFreqButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeTotalFreqButtonActionPerformed
+        // TODO add your handling code here:
+        mergeTotalFreqButton.setEnabled(false);
+        //mergeTotalFreqArea.setVisible(true);
+        mergeClear.setEnabled(true);
+        jScrollPane6.getVerticalScrollBar().setModel(model);
+        new Thread(new ProbabiltyOfMergedList()).start();
+        CountEntropy.setEnabled(true);
+    }//GEN-LAST:event_mergeTotalFreqButtonActionPerformed
+
+    private void mergeFreqButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeFreqButtonActionPerformed
+        // TODO add your handling code here:
+        mergeFreqButton.setEnabled(false);
+        mergeTotalFreqButton.setEnabled(true);
+        jScrollPane5.getVerticalScrollBar().setModel(model);
+        //new Thread(new FrequencyCountMergeList()).start();
+        new MergeListFreqCounter().execute();
+    }//GEN-LAST:event_mergeFreqButtonActionPerformed
+
+    private void mergeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeButtonActionPerformed
+        // TODO add your handling code here:
+        mergeButton.setEnabled(false);
+        contextualMiningButton.setEnabled(true);
+        new Thread(new MergeLists()).start();
+    }//GEN-LAST:event_mergeButtonActionPerformed
+
+    private void contextualMiningButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contextualMiningButtonActionPerformed
+        // TODO add your handling code here:
+        contextualMiningButton.setEnabled(false);
+        mergeFreqButton.setEnabled(true);
+        model = jScrollPane2.getVerticalScrollBar().getModel();
+    }//GEN-LAST:event_contextualMiningButtonActionPerformed
+
+    private void searchGlossaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGlossaryButtonActionPerformed
+
+        GlossarySearcher.alltext.delete(0, GlossarySearcher.alltext.length());
+
+        searchGlossaryButton.setEnabled(false);
+        mergeButton.setEnabled(true);
+
+        System.out.println("Step : Executing Glossary Search");
+        new GlossarySearcher().execute();
+        System.out.println("Step : Gloassary Search Finished");
+    }//GEN-LAST:event_searchGlossaryButtonActionPerformed
+
+    private void entropyAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entropyAreaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_entropyAreaActionPerformed
+
+    private void wordsFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wordsFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_wordsFieldActionPerformed
 
     public static void main(String[] abc) {
         new Form_domain_expert();
@@ -974,11 +1012,14 @@ public class Form_domain_expert extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     public static javax.swing.JButton contextualMiningButton;
+    public static javax.swing.JList derivedList;
+    public static javax.swing.JPanel detailedInfo;
     public static javax.swing.JTextField entropyArea;
     private javax.swing.JButton entropyClear;
     public static javax.swing.JList entropyList;
     private javax.swing.JMenuItem final_List;
     public static javax.swing.JTextField freqArea;
+    public static javax.swing.JPanel generalInfo;
     public static javax.swing.JFileChooser glossaryFileChooser;
     private javax.swing.JButton infoGainClear;
     public static javax.swing.JList infoGainList;
@@ -990,12 +1031,12 @@ public class Form_domain_expert extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1014,13 +1055,13 @@ public class Form_domain_expert extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
-    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     public static javax.swing.JList list1_list2;
     public static javax.swing.JList list1_list2_freq;
     public static javax.swing.JPanel mainPanel;
@@ -1035,7 +1076,6 @@ public class Form_domain_expert extends javax.swing.JFrame {
     public static javax.swing.JList relatedList;
     public static javax.swing.JButton searchGlossaryButton;
     public static javax.swing.JList similarWordsList;
-    public static javax.swing.JList similarWordsOfAgrovoc;
     public static javax.swing.JList similarWordsOfRelatedWordsList;
     public static javax.swing.JList similarityMeasureList;
     public static javax.swing.JTextField weightArea;

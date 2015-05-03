@@ -1,0 +1,95 @@
+original policy : 0.005030157197363774
+insurance pilot : 0.005029323625421059
+insurance pilot project : 0.005029323625421059
+insurance plan original : 0.005029323625421059
+insurance policy original : 0.005029323625421059
+original insurance : 0.005027863102596582
+policy yond original : 0.0050258918115941124
+age original : 0.005025633806491502
+risk financing pilot : 0.005025572983630273
+risk insurance pilot : 0.005025572983630273
+risk pilot : 0.005025572983630273
+risk pilot project : 0.005025572983630273
+risk original : 0.005025572983630273
+original premium : 0.005025244986967814
+part original : 0.005025194741657641
+pilot program : 0.005025134110256336
+original life : 0.005025081857194118
+original life insurance : 0.005025081857194118
+amount original : 0.005025057905960746
+amount original life : 0.005025057905960746
+original sum : 0.005025005506313145
+original term : 0.0050248626151693865
+original term insurer : 0.0050248626151693865
+plan original : 0.005024818283637878
+nefit original : 0.005024800019046897
+nefit original life : 0.005024800019046897
+pilot project : 0.0050247811455364656
+pilot project region : 0.0050247811455364656
+pilot project gin : 0.0050247811455364656
+death nefit original : 0.005024780050364343
+work original : 0.005024758524733405
+financing pilot : 0.005024741528959877
+financing pilot program : 0.005024741528959877
+limit original : 0.005024729620574862
+limit original policy : 0.005024729620574862
+original equipment : 0.005024727406258945
+original equipment manufacturer : 0.005024727406258945
+model pilot : 0.005024708032086428
+model pilot project : 0.005024708032086428
+original death : 0.005024698233850554
+original base : 0.005024693091392899
+original base amount : 0.005024693091392899
+original medicare : 0.005024688983930423
+original medicare part : 0.005024688983930423
+development pilot : 0.0050246845797388496
+view pilot : 0.005024680678564077
+view pilot program : 0.005024680678564077
+original face : 0.005024669760422956
+original face amount : 0.005024669760422956
+reason original : 0.0050246592221028265
+principal original : 0.005024646732808016
+buffer element : 0.005024644035817173
+buffer element tween : 0.005024644035817173
+pilot study : 0.005024636282870322
+return original : 0.005024634751097434
+megacity pilot : 0.00502462949032341
+megacity pilot project : 0.00502462949032341
+original schedule : 0.005024624111529872
+original estimate : 0.00502462375687762
+original estimate policy : 0.00502462375687762
+half original : 0.00502462287024699
+half original amount : 0.00502462287024699
+original paper : 0.005024620742333478
+original position : 0.005024618437093839
+original position evidence : 0.005024618437093839
+relationship original : 0.005024618437093839
+relationship original premium : 0.005024618437093839
+original article : 0.005024617018484831
+yond original : 0.005024615422549697
+yond original term : 0.005024615422549697
+launch pilot : 0.005024613905872036
+launch pilot project : 0.005024613905872036
+microinsurance pilot : 0.0050246125659970985
+microinsurance pilot project : 0.0050246125659970985
+pilot seat : 0.005024610221215957
+pilot seat accident : 0.005024610221215957
+original occupancy : 0.005024607265547899
+catastrophe-model pilot : 0.005024606556243395
+catastrophe-model pilot project : 0.005024606556243395
+original amortization : 0.005024606556243395
+original amortization schedule : 0.005024606556243395
+pilot : 0.005024606201591143
+catastrophe model pilot : 0.005024606201591143
+catastrophe risk pilot : 0.005024606201591143
+funding catastrophe-model pilot : 0.005024606201591143
+feasibility megacity pilot : 0.005024606201591143
+potential megacity pilot : 0.005024606201591143
+effort view pilot : 0.005024606201591143
+buffer : 0.005024606201591143
+original : 0.005024606201591143
+face amount original : 0.005024606201591143
+issue age original : 0.005024606201591143
+liability reason original : 0.005024606201591143
+dollar limit original : 0.005024606201591143
+date half original : 0.005024606201591143

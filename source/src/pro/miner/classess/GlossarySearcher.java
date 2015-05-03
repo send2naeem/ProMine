@@ -45,10 +45,10 @@ public class GlossarySearcher extends SwingWorker {
             
             Form_domain_expert.mergeButton.setEnabled(false);
             
-            if (Form_text_mining.includeAgrovocDictionary) {
-                Form_domain_expert.similarWordsOfAgrovoc.setEnabled(true);
-                AgrovocSearcher.execute();
-            }
+            //if (Form_text_mining.includeAgrovocDictionary) {
+            //    Form_domain_expert.similarWordsOfAgrovoc.setEnabled(true);
+            //    AgrovocSearcher.execute();
+            //}
             
             /* SEARCH FOR SIMILAR WORDS OF KEYWORD */
             new SimilarWordSearcher().execute();

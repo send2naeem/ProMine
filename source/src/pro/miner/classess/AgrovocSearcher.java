@@ -29,6 +29,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import forms.Form_domain_expert;
+import forms.Form_text_mining;
 
 //source: http://www.torsten-horn.de/techdocs/java-soap-axis.htm#WebService-Client-mit-WSDL2Java s. UniversellerClient
 //logging stuff, see http://logback.qos.ch/manual/configuration.html
@@ -41,18 +42,8 @@ public class AgrovocSearcher {
     public static ArrayList<String> agrovocList = new ArrayList<String>();
 
     public static void execute() {
-        //Agrovoc Part
-        int size = Form_domain_expert.relatedList.getModel().getSize();
-        ArrayList<String> related = new ArrayList<String>();
-
-        for (int i = 0; i < size; i++) {
-            System.out.println("AGROVOC SEARCHER STARTING");
-            related.add(Form_domain_expert.relatedList.getModel().getElementAt(i).toString().replace("_", " "));
-        }
-        try {
-            Form_domain_expert.pbofwordnet.setIndeterminate(true);
-            searhArray(related.toArray());
-            Form_domain_expert.pbofwordnet.setIndeterminate(false);
+         try {
+            search(listWordSelection.selectedWord);
 
             DefaultListModel model = new DefaultListModel();
             try {
@@ -61,11 +52,11 @@ public class AgrovocSearcher {
                 }
 
                 // assign to combined list
-                Form_domain_expert.similarWordsOfAgrovoc.removeAll();
-                Form_domain_expert.similarWordsOfAgrovoc.setModel(model);
+                Form_text_mining.agrovocWords.removeAll();
+                Form_text_mining.agrovocWords.setModel(model);                
             } catch (Exception exception) {
-                Form_domain_expert.similarWordsOfAgrovoc.removeAll();
-                Form_domain_expert.similarWordsOfAgrovoc.setModel(model);
+                Form_text_mining.agrovocWords.removeAll();
+                Form_text_mining.agrovocWords.setModel(model);                
             }
         } catch (Exception ex) {
             Logger.getLogger(Form_domain_expert.class.getName()).log(Level.SEVERE, null, ex);
