@@ -4,6 +4,8 @@ import forms.Form_stage_one;
 import java.awt.List;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -111,6 +113,7 @@ public class Form_text_mining extends javax.swing.JFrame {
         jTextFieldGlossaryFile = new javax.swing.JTextField();
         select1 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
+        buttonSaveKeyWords = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -370,6 +373,15 @@ public class Form_text_mining extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Cambria", 1, 10)); // NOI18N
         jLabel12.setText("Glossary File");
 
+        buttonSaveKeyWords.setText("Save");
+        buttonSaveKeyWords.setMaximumSize(new java.awt.Dimension(57, 23));
+        buttonSaveKeyWords.setMinimumSize(new java.awt.Dimension(57, 23));
+        buttonSaveKeyWords.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSaveKeyWordsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -409,11 +421,13 @@ public class Form_text_mining extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(progressBarTextMining, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(searchWord, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(searchWord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(30, 30, 30)
+                                        .addComponent(buttonSaveKeyWords, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel3)))
@@ -470,7 +484,8 @@ public class Form_text_mining extends javax.swing.JFrame {
                             .addComponent(searchWord)
                             .addComponent(reset)
                             .addComponent(addSource)
-                            .addComponent(domain)))
+                            .addComponent(domain)
+                            .addComponent(buttonSaveKeyWords, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -753,11 +768,35 @@ public class Form_text_mining extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_select1ActionPerformed
+
+    private void buttonSaveKeyWordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveKeyWordsActionPerformed
+        
+        DefaultListModel wordNetModel = (DefaultListModel) listofwords.getModel();
+
+        String listToStore = new String();
+        for(int i=0; i<wordNetModel.getSize(); i++){
+            listToStore += wordNetModel.elementAt(i).toString() + " ";
+        }
+                
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(javax.swing.JFileChooser.FILES_ONLY);
+        int returnVal = fileChooser.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+            try {
+                File selectedFile = fileChooser.getSelectedFile();
+                Files.write(Paths.get(selectedFile.toString()), listToStore.getBytes());
+            } catch (IOException e) {
+                System.out.println("Exception occured while writing corpus file: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_buttonSaveKeyWordsActionPerformed
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton addSource;
+    public static javax.swing.JButton buttonSaveKeyWords;
     public static javax.swing.JCheckBox checkBoxIncludeAgrovocdDictionary;
     public static javax.swing.JCheckBox checkFreqCount;
     public static javax.swing.JCheckBox checkStem;

@@ -155,11 +155,13 @@
                                   <Component id="progressBarTextMining" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="searchWord" min="-2" pref="161" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="searchWord" max="32767" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="reset" min="-2" pref="163" max="-2" attributes="0"/>
+                                          <Component id="reset" min="-2" pref="105" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                          <Component id="buttonSaveKeyWords" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jScrollPane3" alignment="0" min="-2" pref="330" max="-2" attributes="0"/>
@@ -238,6 +240,7 @@
                               <Component id="reset" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="addSource" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="domain" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="buttonSaveKeyWords" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -818,6 +821,14 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Glossary File"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="buttonSaveKeyWords">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Save"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonSaveKeyWordsActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
