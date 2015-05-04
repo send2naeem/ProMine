@@ -5,8 +5,10 @@ import static forms.Form_text_mining.checktok;
 import static forms.Form_text_mining.freqlist;
 import static forms.Form_text_mining.listofwords;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -65,6 +67,31 @@ public class TreeSelection {
             Form_text_mining.checkStem.setSelected(true);
             Form_text_mining.checkstop.setSelected(true);
             Form_text_mining.checkFreqCount.setSelected(true);
+            
+            try{                
+             // save to file
+            File origFile = new File(f);
+            String fileName = origFile.getName();
+            File newFile = null;
+            File directory = new File(origFile.getParent());
+            File kwdOutputDir = null;
+            BufferedWriter writer = null;
+            if(directory.isDirectory() && directory.exists())
+                kwdOutputDir = new File(directory.toString() + "/keyword_files");
+                if(!kwdOutputDir.exists())
+                    kwdOutputDir.mkdirs();
+                newFile = new File(kwdOutputDir.toString() + '/' + fileName);
+                if(!newFile.exists()){
+                    writer = new BufferedWriter(new FileWriter(newFile));
+                    for(int i =0;i< StartStemmer.wordsmodel.size();i++){
+                        writer.write(StartStemmer.wordsmodel.getElementAt(i).toString());
+                        writer.newLine();
+                    }                     
+                    writer.close();
+                }
+            }catch(Exception ee){
+                System.out.println(ee.getMessage());
+            }
         } catch (IndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(null,
                     "Select a file for processing\n" + ex + "\nClass:TreeSelection",

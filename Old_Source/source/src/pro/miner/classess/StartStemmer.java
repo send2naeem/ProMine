@@ -57,6 +57,10 @@ public class StartStemmer {
         sortWholeList();
         System.out.println("SORT :: COMPLETED");        
     }
+    
+    public void SaveWords(){
+        
+    }            
 
     public void sortWholeList() {
         BubbleSort bblsort = new BubbleSort();
