@@ -12,10 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/ProMine/Old_Source/source/src/pro/miner/classess/StartStemmer.java</file>
-            <file>file:/D:/ProMine/Old_Source/source/src/pro/miner/classess/RemoveStopWord.java</file>
             <file>file:/D:/ProMine/Old_Source/source/src/forms/Form_text_mining.java</file>
             <file>file:/D:/ProMine/Old_Source/source/src/pro/miner/classess/TreeSelection.java</file>
+            <file>file:/D:/ProMine/Old_Source/source/src/pro/miner/classess/RemoveStopWord.java</file>
+            <file>file:/D:/ProMine/Old_Source/source/src/pro/miner/classess/StartStemmer.java</file>
         </group>
     </open-files>
 </project-private>

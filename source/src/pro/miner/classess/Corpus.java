@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
+import static pro.miner.classess.RemoveStopWord.stopWordsofwordnet;
 
 /**
  *
@@ -22,13 +23,13 @@ import org.apache.commons.lang3.StringUtils;
 public class Corpus {
 
     public static ArrayList<String> words = new ArrayList<String>();
-    
+
     public static void fillPreProcessedWordList(File filePath) throws IOException {
-    
+
         boolean fileFound = false;
         String line = "";
         BufferedReader fileReader = null;
-        
+
         try {
             fileReader = new BufferedReader(new FileReader(filePath));
             fileFound = (fileReader != null) ? true : false;
@@ -37,11 +38,11 @@ public class Corpus {
 
         if (fileFound) {
             while ((line = fileReader.readLine()) != null) {
-                Global.file_text += line;  
+                Global.file_text += line;
             }
-            
+
             List myList = new ArrayList();
-            Collections.addAll(myList, Global.file_text.split(" "));            
+            Collections.addAll(myList, Global.file_text.split(" "));
             words.addAll(myList);
         } else {
             System.out.println("Glossary file not found. Please load a valid corpus file and try again.");
@@ -60,22 +61,27 @@ public class Corpus {
         }
 
         if (fileFound) {
+            int fileLineNumber = 0;
             while ((line = fileReader.readLine()) != null) {
 
-                if (line.trim().length() > 0) {                                       
-                    
+                if (line.trim().length() > 0) {
+
                     /* REMOVAL OF STOP WORDS :: GENERAL */
-                    line = removeStopWordsFromLine(line);
+                    ArrayList<String> afterStopWordsRemoved = removeStopWordsFromLine(line);
 
                     /* REMOVAL OF STOP WORDS :: WORDNET */
-                    List<String> tempList = removeWordNetStopWords(line);
+                    ArrayList<String> afterWordNetStopWordsRemoved = removeWordNetStopWords(afterStopWordsRemoved);
 
                     /* TODO : PERFORM STEMMING HERE IF NEEDED */
+                    ArrayList<String> afterUptoTwoWordsRemoval = removeUptoTwoCharWords(afterWordNetStopWordsRemoved);
 
                     /* ADDITION OF SAFE WORDS TO CORPUS DICTIONARY */
-                    words.addAll(tempList);
-                    
-                    Global.file_text += StringUtils.join(tempList, " ") + " ";                    
+                    words.addAll(afterUptoTwoWordsRemoval);
+                                      
+                    Global.file_text += StringUtils.join(afterUptoTwoWordsRemoval, " ") + " ";
+
+                    fileLineNumber++;
+                    System.out.println("Reading Line Number: " + fileLineNumber);
                 }
             }
         } else {
@@ -83,15 +89,11 @@ public class Corpus {
         }
     }
 
-    private static String removeStopWordsFromLine(String inputLine) {
+    private static ArrayList<String> removeStopWordsFromLine(String inputLine) {
+        String temp = '"' + "";
         inputLine = inputLine.toLowerCase()
-                .replace("also", " ").replace("most", " ").replace("be", " ")
-                .replace("more", " ").replace("each", " ").replace("have", " ")
-                .replace("may", " ").replace("has", " ").replace("other", " ")
-                .replace("the", " ").replace("more", " ").replace("that", " ");
-                //.replace("ing", " ");
-
-        inputLine = inputLine.toLowerCase()
+                .replace("-", "")
+                .replace(temp, " ")
                 .replace("@", " ")
                 .replace("[", " ")
                 .replace("�", " ")
@@ -119,10 +121,10 @@ public class Corpus {
                 .replace("--", " ") // replaced double hipehn first in order to save single hiphen words
                 .replace("’", " ")
                 .replace("\n", " ")
-                //.replace(".", " ")
+                .replace(".", " . ")
                 .replace("(", " ")
                 .replace(")", " ")
-                //.replace(",", " ")
+                .replace(",", " , ")
                 .replace(";", " ")
                 .replace("“", " ")
                 .replace("\\", " ")
@@ -153,21 +155,61 @@ public class Corpus {
 
         inputLine = inputLine.trim().replaceAll("\\s+", " ");
 
-        return inputLine;
-    }
+        ArrayList<String> wordsList = new ArrayList<>();
+        wordsList.addAll(Arrays.asList(inputLine.split(" ")));
 
-    private static List<String> removeWordNetStopWords(String inputLine) {
-        List<String> tempList = new ArrayList<String>();
+        ArrayList<String> processedWordsList = new ArrayList();
+
         try {
-            for (int i = 0; i < Arrays.asList(inputLine.split(" ")).size(); i++) {
-                String word = Arrays.asList(inputLine.split(" ")).get(i).toString();
-                if (!Arrays.asList(RemoveStopWord.stopWordsofwordnet).contains(word)) {
-                    tempList.add(word);
+
+            for (int i = 0; i < wordsList.size(); i++) {
+                // get the item as string
+                if (!Arrays.asList(RemoveStopWord.stopWordsSelfIdentified).contains(wordsList.get(i).replace(wordsList.get(i), " " + wordsList.get(i) + " "))) {
+                    processedWordsList.add(wordsList.get(i));
                 }
             }
         } catch (Exception e) {
+            System.out.println("Exception while removing wordnet data");
+            System.out.println(e.getMessage());
         }
 
-        return tempList;
+        return processedWordsList;
+    }
+
+    private static ArrayList<String> removeWordNetStopWords(ArrayList<String> inputLine) {
+        ArrayList<String> processedWordsList = new ArrayList();
+        try {
+
+            for (int i = 0; i < inputLine.size(); i++) {
+                // get the item as string
+                if (!Arrays.asList(RemoveStopWord.stopWordsofwordnet).contains(inputLine.get(i).replace(inputLine.get(i), " " + inputLine.get(i) + " "))) {
+                    processedWordsList.add(inputLine.get(i));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Exception while removing wordnet data");
+            System.out.println(e.getMessage());
+        }
+        return processedWordsList;
+    }
+    
+    private static ArrayList<String> removeUptoTwoCharWords(ArrayList<String> inputLine) {
+        
+        ArrayList<String> processedWordsList = new ArrayList();
+        
+        try {
+
+            for (int i = 0; i < inputLine.size(); i++) {
+                if(inputLine.get(i).length() > 2 || inputLine.get(i).equals(",") || inputLine.get(i).equals(".")){
+                    processedWordsList.add(inputLine.get(i));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Exception while removing wordnet data");
+            System.out.println(e.getMessage());
+        }
+        
+        
+        return processedWordsList;
     }
 }

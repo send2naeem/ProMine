@@ -57,6 +57,7 @@ public class NewInfoGain implements Runnable {
 
             boolean isKeyWordOnLeft = false;
             boolean isKeyWordOnRight = false;
+            boolean isKeyWordCenter = false;
 
             // find T
             String t = "";
@@ -66,13 +67,24 @@ public class NewInfoGain implements Runnable {
             e.word = compound_word;
             e.probability = probability_in_merge;
             
-            if (compound_word_arr.length >= 2) {
-                if (!synonymsCorpus.contains(compound_word_arr[0].toString())) {
-                    isKeyWordOnRight = true;
-                    t = compound_word_arr[0].toString();
-                } else if (!synonymsCorpus.contains(compound_word_arr[1].toString())) {
+            if (compound_word_arr.length == 2) {
+                if (synonymsCorpus.contains(compound_word_arr[0].toString())) {
                     isKeyWordOnLeft = true;
                     t = compound_word_arr[1].toString();
+                } else if (synonymsCorpus.contains(compound_word_arr[1].toString())) {
+                    isKeyWordOnRight = true;
+                    t = compound_word_arr[0].toString();
+                }
+            } else if (compound_word_arr.length == 3) {
+                if (synonymsCorpus.contains(compound_word_arr[0].toString())) {
+                    isKeyWordOnLeft = true;
+                    t = compound_word_arr[1].toString() + " " + compound_word_arr[2].toString();
+                } else if (synonymsCorpus.contains(compound_word_arr[1].toString())) {
+                    isKeyWordCenter = true;
+                    t = compound_word;
+                }else if (synonymsCorpus.contains(compound_word_arr[2].toString())) {
+                    isKeyWordOnRight = true;
+                    t = compound_word_arr[0].toString() + " " + compound_word_arr[1].toString();
                 }
             }
 
@@ -82,13 +94,35 @@ public class NewInfoGain implements Runnable {
             // calculate prob of t against each word in corpus
             double sum_t_with_other = 0;
             for (String corpus_word : synonymsCorpus) {
-                String comp_word_with_key_word_right = t + " " + corpus_word;
-                String comp_word_with_key_word_left = corpus_word + " " + t;
-
+                              
                 // prob of merged word : combination
                 double prob = 0;
                 double log_prob = 0;
-                if (isKeyWordOnLeft) {
+                
+                if(isKeyWordCenter){
+                    
+                    String comp_word_with_key_word_center = compound_word_arr[0] + " " + corpus_word + " " + compound_word_arr[2];
+                    
+                    if (MergeListFreqCounter.mergeListProb.containsKey(comp_word_with_key_word_center)) {
+                        prob = Double.parseDouble(MergeListFreqCounter.mergeListProb.get(comp_word_with_key_word_center).toString());
+                    } else {
+                        prob = getProbabilityInCorpus(comp_word_with_key_word_center);
+                    }
+
+                    log_prob = Math.log(prob);
+
+                    sum_t_with_other += (prob > 0 ? prob * log_prob : 0);
+
+                    System.out.println("Probability: " + prob);
+                    System.out.println("Log Of Probability: " + log_prob);
+                    System.out.println("Product : " + prob * log_prob);
+                    System.out.println("Sum  : " + sum_t_with_other);
+                    //System.out.println("Compund word of Current Word[" + t + "]: " + comp_word_with_key_word_left);
+                }
+                else if (isKeyWordOnLeft) {
+                    
+                    String comp_word_with_key_word_left = corpus_word + " " + t;
+                    
                     if (MergeListFreqCounter.mergeListProb.containsKey(comp_word_with_key_word_left)) {
                         prob = Double.parseDouble(MergeListFreqCounter.mergeListProb.get(comp_word_with_key_word_left).toString());
                     } else {
@@ -105,8 +139,9 @@ public class NewInfoGain implements Runnable {
                     System.out.println("Sum  : " + sum_t_with_other);
                     //System.out.println("Compund word of Current Word[" + t + "]: " + comp_word_with_key_word_left);
                 }
-
-                if (isKeyWordOnRight) {
+                else if (isKeyWordOnRight) {
+                    
+                    String comp_word_with_key_word_right = t + " " + corpus_word;
                     // prob of merged word : combination
                     if (MergeListFreqCounter.mergeListProb.containsKey(comp_word_with_key_word_right)) {
                         prob = Double.parseDouble(MergeListFreqCounter.mergeListProb.get(comp_word_with_key_word_right).toString());
@@ -177,20 +212,10 @@ public class NewInfoGain implements Runnable {
         double count_of_word = 0;
         double total_words = 0;
         try {
+            
             Form_domain_expert.pbofwordnet.setIndeterminate(true);
             //BufferedReader br = new BufferedReader(new FileReader(file));
             String line = "";
-
-//            while ((line = br.readLine()) != null) {
-//                if (!line.isEmpty()) {
-//                    line = removeStopWordFromLine(line);
-//                    String[] word_array = input_word.split("\\s");
-//                    count_of_word += countWordFreq(StringUtils.join(word_array, "(\\s+)"), line);
-//                    total_words += CountWords(line);
-//                }
-//            }
-//
-//            br.close();
             line = Global.file_text;
 
             String[] word_array = input_word.split("\\s");
