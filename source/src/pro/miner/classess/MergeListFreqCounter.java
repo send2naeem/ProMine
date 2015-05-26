@@ -37,15 +37,24 @@ public class MergeListFreqCounter extends SwingWorker {
 
         mergeListFreq.clear();
         mergeListProb.clear();
+        
+        DefaultListModel list1_list2_model = new DefaultListModel();
 
         for (int i = 0; i < Form_domain_expert.list1_list2.getModel().getSize(); i++) {
             String word = Form_domain_expert.list1_list2.getModel().getElementAt(i).toString();
             fillProbAndFreq(word);
-            list1_list2_freq_model.addElement(Double.parseDouble(mergeListFreq.get(word).toString()));
+
+            Double Frequency = Double.parseDouble(mergeListFreq.get(word).toString());
+
+            if (Frequency > 1.0) {
+                list1_list2_model.addElement(Form_domain_expert.list1_list2.getModel().getElementAt(i));
+                list1_list2_freq_model.addElement(Double.parseDouble(mergeListFreq.get(word).toString()));
+            }                         
         }
 
         Form_domain_expert.pbofwordnet.setIndeterminate(false);
         Form_domain_expert.list1_list2_freq.setModel(list1_list2_freq_model);
+        Form_domain_expert.list1_list2.setModel(list1_list2_model);
     }
 
     private static double fillProbAndFreq(String input_word) {

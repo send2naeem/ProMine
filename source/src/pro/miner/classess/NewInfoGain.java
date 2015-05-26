@@ -52,9 +52,7 @@ public class NewInfoGain implements Runnable {
             double informationGain = 0;
             double total_entropy = EntropyOfSynonyms.total_entropy;
             double probability_in_merge = Double.parseDouble(Form_domain_expert.mergeListProb.getModel().getElementAt(i).toString());
-            
-            
-
+                        
             boolean isKeyWordOnLeft = false;
             boolean isKeyWordOnRight = false;
             boolean isKeyWordCenter = false;
@@ -253,92 +251,92 @@ public class NewInfoGain implements Runnable {
         return trim.split("\\s+").length; //separate string around spaces
     }
 
-    private static String removeStopWordsFromLine(String inputLine) {
-        inputLine = inputLine.toLowerCase()
-                .replace("also", " ").replace("most", " ").replace("be", " ")
-                .replace("more", " ").replace("each", " ").replace("have", " ")
-                .replace("may", " ").replace("has", " ").replace("other", " ")
-                .replace("the", " ").replace("more", " ").replace("that", " ");
+//    private static String removeStopWordsFromLine(String inputLine) {
+//        inputLine = inputLine.toLowerCase()
+//                .replace("also", " ").replace("most", " ").replace("be", " ")
+//                .replace("more", " ").replace("each", " ").replace("have", " ")
+//                .replace("may", " ").replace("has", " ").replace("other", " ")
+//                .replace("the", " ").replace("more", " ").replace("that", " ");
+//
+//        inputLine = inputLine.toLowerCase()
+//                .replace("@", " ")
+//                .replace("[", " ")
+//                .replace("�", " ")
+//                .replace("=", " ")
+//                .replace("+", " ")
+//                .replace("?", " ")
+//                .replace("&", " ")
+//                .replace("%", " ")
+//                .replace("$", " ")
+//                .replace(" ", " ")
+//                .replace("<", " ")
+//                .replace(">", " ")
+//                .replace("]", " ")
+//                .replace("*", " ")
+//                .replace("_", " ")
+//                .replace("{", " ")
+//                .replace("}", " ")
+//                .replace("#", " ")
+//                .replace(":", " ")
+//                .replace("•", " ")
+//                .replace("\n", " ")
+//                .replace("\u0092", " ")
+//                .replace("'", " ")
+//                .replace("•", " ")
+//                .replace("--", " ") // replaced double hipehn first in order to save single hiphen words
+//                .replace("’", " ")
+//                .replace("\n", " ")
+//                //.replace(".", " ")
+//                .replace("(", " ")
+//                .replace(")", " ")
+//                //.replace(",", " ")
+//                .replace(";", " ")
+//                .replace("“", " ")
+//                .replace("\\", " ")
+//                .replace("/", " ")
+//                .replace("”", " ")
+//                .replace("–", "") // in order to get words like "multi-national" => "multinational"
+//                .replace("1", " ")
+//                .replace("2", " ")
+//                .replace("3", " ")
+//                .replace("4", " ")
+//                .replace("5", " ")
+//                .replace("6", " ")
+//                .replace("7", " ")
+//                .replace("8", " ")
+//                .replace("9", " ")
+//                .replace("0", " ")
+//                // ROMAN COUNTING
+//                .replace("I", " ")
+//                .replace("II", " ")
+//                .replace("III", " ")
+//                .replace("IV", " ")
+//                .replace("V", " ")
+//                .replace("VI", " ")
+//                .replace("VII", " ")
+//                .replace("VIII", " ")
+//                .replace("IX", " ")
+//                .replace("X", " ");
+//
+//        inputLine = inputLine.trim().replaceAll("\\s+", " ");
+//
+//        return inputLine;
+//    }
 
-        inputLine = inputLine.toLowerCase()
-                .replace("@", " ")
-                .replace("[", " ")
-                .replace("�", " ")
-                .replace("=", " ")
-                .replace("+", " ")
-                .replace("?", " ")
-                .replace("&", " ")
-                .replace("%", " ")
-                .replace("$", " ")
-                .replace(" ", " ")
-                .replace("<", " ")
-                .replace(">", " ")
-                .replace("]", " ")
-                .replace("*", " ")
-                .replace("_", " ")
-                .replace("{", " ")
-                .replace("}", " ")
-                .replace("#", " ")
-                .replace(":", " ")
-                .replace("•", " ")
-                .replace("\n", " ")
-                .replace("\u0092", " ")
-                .replace("'", " ")
-                .replace("•", " ")
-                .replace("--", " ") // replaced double hipehn first in order to save single hiphen words
-                .replace("’", " ")
-                .replace("\n", " ")
-                //.replace(".", " ")
-                .replace("(", " ")
-                .replace(")", " ")
-                //.replace(",", " ")
-                .replace(";", " ")
-                .replace("“", " ")
-                .replace("\\", " ")
-                .replace("/", " ")
-                .replace("”", " ")
-                .replace("–", "") // in order to get words like "multi-national" => "multinational"
-                .replace("1", " ")
-                .replace("2", " ")
-                .replace("3", " ")
-                .replace("4", " ")
-                .replace("5", " ")
-                .replace("6", " ")
-                .replace("7", " ")
-                .replace("8", " ")
-                .replace("9", " ")
-                .replace("0", " ")
-                // ROMAN COUNTING
-                .replace("I", " ")
-                .replace("II", " ")
-                .replace("III", " ")
-                .replace("IV", " ")
-                .replace("V", " ")
-                .replace("VI", " ")
-                .replace("VII", " ")
-                .replace("VIII", " ")
-                .replace("IX", " ")
-                .replace("X", " ");
-
-        inputLine = inputLine.trim().replaceAll("\\s+", " ");
-
-        return inputLine;
-    }
-
-    private static List<String> removeWordNetStopWords(String inputLine) {
-        List<String> tempList = new ArrayList<String>();
-        try {
-            for (int i = 0; i < Arrays.asList(inputLine.split(" ")).size(); i++) {
-                String word = Arrays.asList(inputLine.split(" ")).get(i).toString();
-                if (!Arrays.asList(RemoveStopWord.stopWordsofwordnet).contains(word)) {
-                    tempList.add(word);
-                }
-            }
-        } catch (Exception e) {
-        }
-
-        return tempList;
-    }
+//    private static List<String> removeWordNetStopWords(String inputLine) {
+//        List<String> tempList = new ArrayList<String>();
+//        try {
+//            for (int i = 0; i < Arrays.asList(inputLine.split(" ")).size(); i++) {
+//                String word = Arrays.asList(inputLine.split(" ")).get(i).toString();
+//                if (!Arrays.asList(RemoveStopWord.stopWordsofwordnet).contains(word)) {
+//                    tempList.add(word);
+//                }
+//            }
+//        } catch (Exception e) {
+//        }
+//
+//        return tempList;
+//    }
     
     private double computeInformationGain(double entropy, double probability_compound){
         boolean isEntropyPositive = Form_domain_expert.jRadioButtonEntropyPositive.isSelected();
